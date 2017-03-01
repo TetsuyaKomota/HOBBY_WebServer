@@ -1,2 +1,3 @@
 # 設定ファイルは無視する
 **/setting.py
+**/setting.pyc

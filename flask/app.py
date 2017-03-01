@@ -15,7 +15,7 @@ def basic_auth():
 
 @app.route("/")
 def index():
-    return render_template("sample.html")
+    return render_template("index.html")
     # return agent.talk("hogehoge")
 
 
