@@ -16,7 +16,22 @@ def basic_auth():
 @app.route("/")
 def index():
     return render_template("index.html")
-    # return agent.talk("hogehoge")
+
+@app.route("/admin")
+@requires_auth
+def admin():
+    return render_template("admin.html")
+
+
+
+
+
+
+@app.route("/now_making")
+def now_making():
+    return render_template("nowMaking.html")
+
+
 
 
 if __name__ == "__main__":
