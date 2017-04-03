@@ -2,15 +2,19 @@
 
 from setting import DBC_USERNAME, DBC_PASSWORD, DBC_HOST, DBC_DBNAME 
 
+import MySQLdb
 
 class Inserter:
 
     def __init__(self):
+
+        # 接続情報を設定ファイルから読み込み
         self.conn = MySQLdb.connect(
             user=DBC_USERNAME,
             passwd=DBC_PASSWORD,
             host=DBC_HOST,
-            db=DBC_DBNAME
+            db=DBC_DBNAME,
+            charset='utf8'
         )
     '''
     # テーブルの作成
@@ -59,6 +63,52 @@ class Inserter:
     c.close()
     conn.close()
     '''
+
+    # 接続先を変更
+    def changeConnection(self, userName = DBC_USERNAME, password = DBC_PASSWORD, hostName = DBC_HOST, dbName = DBC_DBNAME):
+        # 接続情報を設定ファイルから読み込み
+        self.conn = MySQLdb.connect(
+            user=userName,
+            passwd=password,
+            host=hostName,
+            db=dbName,
+            charset='utf8'
+        )
+ 
+    # 挿入クエリを飛ばす．
+    def insert(self, tableName, values = {}):
+        cursor = self.conn.cursor()
+        # SQL 文を生成
+        sql = u'insert into ' + tableName + u"("
+
+        count = 0
+        for c in values:
+            count = count + 1
+            sql = sql + c
+            if count < len(values):
+                sql = sql + u","
+            else:
+                sql = sql + u") values("
+            #
+        #
+        count = 0
+        for c in values:
+            count = count + 1
+            sql = sql + u"'" + values[c] + u"'"
+            if count < len(values):
+                sql = sql + u","
+            else:
+                sql = sql + u")"
+        # デバッグ．sql 文が正しく作れているか出力
+        print(sql)
+        print(type(sql))
+        # 実行
+        cursor.execute(sql)
+        self.conn.commit()
+        cursor.close()
+        
+        
+
 
     # ファイルを読み込んで DB に登録する
     # ファイルは 一行目に,\t 区切りのカラム名，二行目以降に,\t 区切りに値を書いたタプル
