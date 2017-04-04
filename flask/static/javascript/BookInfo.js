@@ -15,6 +15,7 @@ var BookInfo = React.createClass(
                 splited_8  : '-',
                 splited_9  : '-',
                 splited_10 : '-',
+                isbn : '',
                 title : '',
                 author : '',
                 publisher : ''
@@ -24,6 +25,11 @@ var BookInfo = React.createClass(
         sendIsbn : function(e){
             
             if(e.key === 'Enter'){
+                this.setState({
+                    isbn : '',
+                    title : '',
+                    author : ''
+                });
                 let a = $.ajax({
                     url: 'http://13.113.169.250:5000/api/book_info',
                     Type: 'GET',
@@ -31,14 +37,27 @@ var BookInfo = React.createClass(
                     data: {'isbn' : e.target.value},
                     dataType: 'json', 
                     cache: false,
-                    complete: function(data) {
-                        console.log(data);
-                    }
                 })
                 a.done(function(data){
-                    console.log(data.bodydata);
-                    this.setState({pressed : data.bodydata});
+                    this.setState({
+                        pressed : data.bodydata,
+                        isbn : data.isbn,
+                        title : data.title,
+                        author : data.author
+                    });
+                    console.log(this.state);
                     this.generateTemplate();
+                    if(
+                        this.state.isbn != '' &&
+                        this.state.title != '' &&
+                        this.state.author != '' 
+                    ){
+                        this.insertToDB();
+                    }
+                    else{
+                        console.log("something wrong...");
+                    }
+
                 }.bind(this)).fail(function(XMLHttpRequest, textStatus, errorThrown){
                     console.log("-1:"+XMLHttpRequest.status);
                     console.log("-2:"+textStatus);
@@ -48,18 +67,38 @@ var BookInfo = React.createClass(
             }
         },
 
-        handleChange : function(e, key){
-            if(key === 'title'){
+        insertToDB : function() {
+                 $.ajax({
+                    url: 'http://13.113.169.250:5000/api/book_insert',
+                    Type: 'GET',
+                    scriptCharset: 'UTF-8',
+                    data: {
+                        'isbn' : this.state.isbn,
+                        'title' : this.state.title,
+                        'author' : this.state.author
+                    },
+                    dataType: 'json', 
+                    cache: false
+                }).fail(function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log("-4:"+XMLHttpRequest.status);
+                    console.log("-5:"+textStatus);
+                    console.log("-6:"+errorThrown);
+                });
+
+            
+        },
+
+        handleChange : function(e){
+            console.log("handleChange は動いてるよ");
+            console.log(e.target.name + ", "+e.target.value);
+            if(e.target.name === 'title'){
                 this.setState({title : e.target.value});
-                e.target.value = this.state.title;
             }
-            else if(key === 'author'){
+            else if(e.target.name === 'author'){
                 this.setState({author : e.target.value});
-                e.target.value = this.state.author;
             }
-            else if(key === 'publisher'){
+            else if(e.target.name === 'publisher'){
                 this.setState({publisher : e.target.value});
-                e.target.value = this.state.publisher;
             }
         },
 
@@ -81,26 +120,45 @@ var BookInfo = React.createClass(
             });
 
         },
+/*
+        manualGenerate : function(){
+        
+            this.setState({
+                pressed : '&amazon('+converted_Isbn+'){large}\n'
+                + '*基本情報\n'
+                + '{| width="500px" class="custom-css" style="color:#6e7955"\n'
+                + '|タイトル||\n' 
+                '|作者名||\n'
+                '|巻数||\n'
+                '|出版社||\n'
+                '|部室に追加した人|'+'|\n'
+                '|最終更新者|'+'|\n'
+                '|編集日|' + date + '|\n'
+                '|}'
 
+            });
+
+        },
+*/
         render : function(){
             return (
                 <div>
                     <p>
-                        ISBN
+                        AUTO_ISBN
                         <input type='text' value={this.inputisbn} onKeyPress={this.sendIsbn} />
                     </p>
                         登録されていない場合は，ここに入力してください(まだ何も起こらないので無視してください)
                     <p>
                         タイトル
-                        <input type='text' value={this.title} onKeyPress={this.handleChange('title')} />
+                        <input type='text' name='title' value={this.title} onKeyPress={this.handleChange} />
                     </p>
                     <p>
                         作者
-                        <input type='text' value={this.author} onKeyPress={this.handleChange('author')} />
+                        <input type='text' name='author' value={this.author} onKeyPress={this.handleChange} />
                     </p>
                     <p>
                         出版社
-                        <input type='text' value={this.publisher} onKeyPress={this.handleChange('publisher')} />
+                        <input type='text' name='publiser' value={this.publisher} onKeyPress={this.handleChange} />
                     </p>
                     <input type='button' value="追加" />
                  

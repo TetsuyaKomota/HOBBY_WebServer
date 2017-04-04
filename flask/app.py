@@ -57,8 +57,41 @@ def now_making():
 def Api_BookInfo():
     output = {}
     output['success'] = True
-    output['bodydata'] = RakutenBookInfo.Api_getBookInfo(request.args.get("isbn", ""), datetime.date.today().isoformat())
+    bookInfo = RakutenBookInfo.Api_getBookInfo(request.args.get("isbn", ""), datetime.date.today().isoformat())
+    output['bodydata'] = bookInfo["bodydata"]
+    output['isbn'] = bookInfo["isbn"]
+    output['title'] = bookInfo["title"]
+    output['author'] = bookInfo["author"]
     return json.dumps(output, indent=4, ensure_ascii=False)
+
+@app.route("/api/book_insert", methods=["GET"])
+def Api_BookInsert():
+    token = Inserter.Inserter()
+    token.changeConnection(dbName="PMAN_DB")
+    values = {}
+    if isinstance(request.args.get("isbn", ''), str):
+        values["isbn"] = request.args.get("isbn", '').decode("utf-8")
+    elif isinstance(request.args.get("isbn", ''), unicode):
+        values["isbn"] = request.args.get("isbn", '')
+ 
+    if isinstance(request.args.get("title", ''), str):
+        values["title"] = request.args.get("title", '').decode("utf-8")
+    elif isinstance(request.args.get("title", ''), unicode):
+        values["title"] = request.args.get("title", '')
+
+    if isinstance(request.args.get("author", ''), str):
+        values["author"] = request.args.get("author", '').decode("utf-8")
+    elif isinstance(request.args.get("author", ''), unicode):
+        values["author"] = request.args.get("author", '')
+ 
+
+
+    token.insert(tableName="booklist", values=values)
+    output = {}
+    output['success'] = True
+    return json.dumps(output, indent=4, ensure_ascii=False)
+
+
 
 
 if __name__ == "__main__":

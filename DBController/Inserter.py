@@ -100,8 +100,8 @@ class Inserter:
             else:
                 sql = sql + u")"
         # デバッグ．sql 文が正しく作れているか出力
-        print(sql)
-        print(type(sql))
+        # print(sql)
+        # print(type(sql))
         # 実行
         cursor.execute(sql)
         self.conn.commit()

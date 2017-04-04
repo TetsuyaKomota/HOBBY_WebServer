@@ -7,6 +7,8 @@ import math
 from setting import RAKUTEN_API_KEY
 
 def Api_getBookInfo(input_Isbn, date):
+
+        output = {}
         
         converted_Isbn = convert13To10(input_Isbn)
 
@@ -22,31 +24,40 @@ def Api_getBookInfo(input_Isbn, date):
         res = req.get(url,params=payload)
         data = res.json()
 
+        output["isbn"] = converted_Isbn
+
         # 楽天API に登録されていない（見つからない）場合
         if len(data[u'Items']) == 0:
-            return  '&amazon('+converted_Isbn+'){large}\n'+ \
-                    '*基本情報\n' +\
-                    '{| width="500px" class="custom-css" style="color:#6e7955"\n' + \
-                    '|タイトル||\n' + \
-                    '|作者名||\n' + \
-                    '|巻数||\n' + \
-                    '|出版社||\n' + \
-                    '|部室に追加した人|'+'|\n' + \
-                    '|最終更新者|'+'|\n' + \
-                    '|編集日|' + date + '|\n' + \
-                    '|}'
+            output["title"] = ""
+            output["author"] = ""
+            output["bodydata"] = '&amazon('+converted_Isbn+'){large}\n'+ \
+                '*基本情報\n' +\
+                '{| width="500px" class="custom-css" style="color:#6e7955"\n' + \
+                '|タイトル||\n' + \
+                '|作者名||\n' + \
+                '|巻数||\n' + \
+                '|出版社||\n' + \
+                '|部室に追加した人|'+'|\n' + \
+                '|最終更新者|'+'|\n' + \
+                '|編集日|' + date + '|\n' + \
+                '|}'
         
-        return  '&amazon('+converted_Isbn+'){large}\n'+ \
-           '*基本情報\n' +\
-           '{| width="500px" class="custom-css" style="color:#6e7955"\n' + \
-           '|タイトル|'+data[u'Items'][0][u'Item'][u'title'].encode('utf-8')+'|\n' + \
-           '|作者名|'+data[u'Items'][0][u'Item'][u'author'].encode('utf-8')+'|\n' + \
-           '|巻数||\n' + \
-           '|出版社|'+data[u'Items'][0][u'Item'][u'publisherName'].encode('utf-8')+'|\n' + \
-           '|部室に追加した人|'+'|\n' + \
-           '|最終更新者|'+'|\n' + \
-           '|編集日|' + date + '|\n' + \
-           '|}'
+        else:
+            output["title"] = data[u'Items'][0][u'Item'][u'title'].encode('utf-8')
+            output["author"] = data[u'Items'][0][u'Item'][u'author'].encode('utf-8')
+            output["bodydata"] = '&amazon('+converted_Isbn+'){large}\n'+ \
+                '*基本情報\n' +\
+                '{| width="500px" class="custom-css" style="color:#6e7955"\n' + \
+                '|タイトル|'+data[u'Items'][0][u'Item'][u'title'].encode('utf-8')+'|\n' + \
+                '|作者名|'+data[u'Items'][0][u'Item'][u'author'].encode('utf-8')+'|\n' + \
+                '|巻数||\n' + \
+                '|出版社|'+data[u'Items'][0][u'Item'][u'publisherName'].encode('utf-8')+'|\n' + \
+                '|部室に追加した人|'+'|\n' + \
+                '|最終更新者|'+'|\n' + \
+                '|編集日|' + date + '|\n' + \
+                '|}'
+
+        return output
 
 def convert13To10(isbn13):
         if isbn13.isdigit() == False or  (int(math.log10(int(isbn13)))+1 != 10 and int(math.log10(int(isbn13)))+1 != 13):
