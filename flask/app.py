@@ -9,7 +9,7 @@ import datetime
 from setting import HOSTNAME, PORT
 # TODO この辺汚いからうまい書き方を考える
 from hikari import HikariMain
-from Controller import RakutenBookInfo
+from controllers import RakutenBookInfo
 from DBController import Inserter
 
 app = Flask(__name__)
