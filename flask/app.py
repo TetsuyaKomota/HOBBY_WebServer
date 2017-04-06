@@ -7,7 +7,7 @@ import json
 
 from setting import HOSTNAME, PORT
 # TODO この辺汚いからうまい書き方を考える
-from lib.hikari import HikariMain
+from models.hikari import HikariMain
 
 from controllers.BookInsert import bookInsert
 from controllers.BookInfo import bookInfo

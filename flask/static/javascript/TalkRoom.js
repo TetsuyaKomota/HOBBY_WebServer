@@ -21,7 +21,7 @@ var TalkRoom = React.createClass(
                 url: 'http://13.113.169.250:5000/api/hikari_talk',
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
-                data: {},
+                data: {'query' : 'API の要素を反映できたよ！'},
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){
