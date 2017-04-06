@@ -11,6 +11,7 @@ from lib.hikari import HikariMain
 
 from controllers.BookInsert import bookInsert
 from controllers.BookInfo import bookInfo
+from controllers.HikariTalk import hikariTalk
 
 
 app = Flask(__name__)
@@ -51,9 +52,11 @@ def book_info():
 def now_making():
     return render_template("nowMaking.html")
 
-# -------------------------------------------------
+# =============================================================================
 # API
 
+# -----------------------------------------------------------
+# 蔵書DB 用 API
 @app.route("/api/book_info", methods=["GET"])
 def Api_BookInfo():
     return bookInfo(request.args)
@@ -62,6 +65,11 @@ def Api_BookInfo():
 def Api_BookInsert():
     return bookInsert(request.args)
 
+# -----------------------------------------------------------
+# ひかりちゃん用 API
+@app.route("/api/hikari_talk", methods=["GET"])
+def Api_Hikari_Talk():
+    return hikariTalk(request.args)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,7 @@
+.parent {
+ width: 100%;
+ display: inline-block;
+}
+.child {
+ width: 100px;
+}

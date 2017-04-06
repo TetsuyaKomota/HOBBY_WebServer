@@ -1,17 +1,23 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <title>ひかりちゃんの部屋</title>
+        <meta charset="UTF-8">
+        <!--css を読み込む-->
         <link rel="stylesheet" type="text/css" href-"statis/css/baseStyle.css">
+        <link rel="stylesheet" type="text/css" href-"statis/css/hikariStyle.css">
+        <!-- jQuery を読み込む-->
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" charset="utf-8"></script>
+        <!--babelを読み込む-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react-dom.js"></script>
+        <script src="https://unpkg.com/babel-core@5.8.38/browser.min.js"></script>
+  
+        <!--reactとreact-domのライブラリを読み込む-->
+        <script type="text/babel" src="/static/javascript/TalkRoom.js"></script>
     </head>
+<body>
+  
+<div id="content"></div>
 
-    <body>
-        <img src="static/images/talkRoom/TalkAI_graphics_normal.png" alt="ひかりちゃん" align=left>
-        <div id="holder">
-                ひかり &gt; あ，いらっしゃい！どうしたの?<br><br>
-        </div>
-        <div id="sender">
-            <input type="text" id="message" size=80 value="こんにちは">
-            <button id="send">send</button>
-        </div>
-    </body>
+</body>
 </html>
