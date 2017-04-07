@@ -9,7 +9,7 @@ def hikariTalk(args, h):
 
     output = {}
     output['success'] = True
-    output['talk'] = 'やったね，' + h.talk_echo(args.get("query", '')).encode("utf-8")
+    output['talk'] = h.talk(args.get("query", '')).encode("utf-8")
     return json.dumps(output, indent=4, ensure_ascii=False)
 
 

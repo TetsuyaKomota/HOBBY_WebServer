@@ -1,6 +1,7 @@
 #-*- coding:utf-8 -*-
 
 from setting import HIKARI_USERNAME as USERNAME
+from lib.DBController import Ksql
 import random
 
 # ひかりちゃんAI クラス
@@ -20,7 +21,15 @@ class Hikari:
         self.stateLib.append("shy")
 
     def talk(self, query):
-        return "やったね，モデルを経由したよ！"
+
+        k = Ksql.Ksql()
+        if self.stateLib[self.stateIdx] == "normal":
+            res = k.select("quotation", where = {"key_id" : "6"})
+        else:
+            res = k.select("quotation", where = {"match_" + self.stateLib[self.stateIdx] : "1"})
+        
+        # return "やったね，モデルを経由したよ！"
+        return res[0][1]
 
     def changeState(self, query):
         

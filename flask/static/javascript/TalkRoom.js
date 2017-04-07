@@ -48,7 +48,7 @@ var TalkRoom = React.createClass(
         render : function(){
             return (
                 <div>
-                    <h1>Hello TalkRoom_React</h1>
+                    <h1>ひかりちゃんの部屋</h1>
                     <div style={{display:"inline-block"}}>
                         <img src={this.state.image_src} />
                     </div>

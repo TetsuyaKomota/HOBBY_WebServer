@@ -22,11 +22,11 @@ agents = {}
 log = {}
 
 @app.before_request
-@requires_auth
 def basic_auth():
     pass
 
 @app.route("/")
+@requires_auth
 def index():
     return render_template("index.html")
 
@@ -37,7 +37,6 @@ def admin():
 
 @app.route("/talk_room")
 def talk_room():
-    # agents[len(agents)] = HikariMain.Hikari()
     return render_template("talkRoom.html")
 
 @app.route("/react_study")
@@ -46,6 +45,7 @@ def react_study():
     return render_template("reactStudy.html")
 
 @app.route("/book_info", methods=["GET"])
+@requires_auth
 def book_info():
     return render_template("bookinfo.html")
 
