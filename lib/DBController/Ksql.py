@@ -113,8 +113,17 @@ class Ksql:
     def select(self, tableName, select = '*', where = {}):
         cursor = self.conn.cursor()
         # SQL 文を生成
-        if isinstance(select, dict) == True:
-            sql = u"hogehoge"
+        if isinstance(select, dict) == True and len(select) > 0:
+            sql = u"select "
+            count = 0
+            for i in select:
+                count = count + 1
+                sql = sql + i
+                if count < len(select):
+                    sql = sql + ", "
+                #
+            #
+            sql = sql + " from "
         elif select == '*':
             sql = u'select * from ' + tableName
         else:
@@ -129,9 +138,13 @@ class Ksql:
         # 実行
         cursor.execute(sql)
         # 取得したエントリーをほにゃほにゃする
-        # hogehoge
+        output = cursor.fetchall()
         self.conn.commit()
         cursor.close()
+
+        return output
+
+
  
 
     # ファイルを読み込んで DB に登録する
