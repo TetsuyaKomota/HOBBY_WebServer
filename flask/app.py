@@ -12,11 +12,12 @@ from models.hikari import HikariMain
 from controllers.BookInsert import bookInsert
 from controllers.BookInfo import bookInfo
 from controllers.HikariTalk import hikariTalk
+from controllers.HikariChangeState import hikariChangeState
 
 
 app = Flask(__name__)
 
-Agents = {}
+agents = {}
 
 log = {}
 
@@ -36,7 +37,7 @@ def admin():
 
 @app.route("/talk_room")
 def talk_room():
-    Agents[len(Agents)] = HikariMain.Hikari()
+    # agents[len(agents)] = HikariMain.Hikari()
     return render_template("talkRoom.html")
 
 @app.route("/react_study")
@@ -67,10 +68,17 @@ def Api_BookInsert():
 
 # -----------------------------------------------------------
 # ひかりちゃん用 API
+    # 対話を取得
 @app.route("/api/hikari_talk", methods=["GET"])
-def Api_Hikari_Talk():
-    return hikariTalk(request.args)
+def Api_HikariTalk():
+    return hikariTalk(request.args, agents[0])
+    # 感情遷移を取得
+@app.route("/api/hikari_change_state", methods=["GET"])
+def Api_HikariChangeState():
+    return hikariChangeState(request.args, agents[0])
+
 
 
 if __name__ == "__main__":
+    agents[0] = HikariMain.Hikari()
     app.run( debug = True, host=HOSTNAME, port=PORT)

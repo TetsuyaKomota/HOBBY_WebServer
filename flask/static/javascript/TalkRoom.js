@@ -9,11 +9,21 @@ var TalkRoom = React.createClass(
         },
 
         componentDidMount : function(){
-            this.changeFace(this.state.face);
+            this.changeState(this.state.face);
         },
 
-        changeFace : function(input){
-            this.setState({image_src : "/static/images/talkRoom/TalkAI_graphics_"+input+".png"})
+        changeState : function(){
+
+            $.ajax({
+                url: 'http://13.113.169.250:5000/api/hikari_change_state',
+                Type: 'GET',
+                scriptCharset: 'UTF-8',
+                data: {'query' : '今はこの入力に意味ないよ！'},
+                dataType: 'json', 
+                cache: false,
+            }).done(function(data){
+                this.setState({image_src : "/static/images/talkRoom/TalkAI_graphics_"+data.state+".png"})
+            }.bind(this));
         },
 
         talk : function(){
@@ -31,7 +41,7 @@ var TalkRoom = React.createClass(
 
         handleClick : function(){
             console.log("やっほー");
-            this.changeFace("happy");
+            this.changeState();
             this.talk();
         },
 

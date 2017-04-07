@@ -107,8 +107,32 @@ class Ksql:
         self.conn.commit()
         cursor.close()
         
-        
 
+    # 選択クエリを飛ばす．
+    # 現状はとりあえず where 句のみ．join とかはできない
+    def select(self, tableName, select = '*', where = {}):
+        cursor = self.conn.cursor()
+        # SQL 文を生成
+        if isinstance(select, dict) == True:
+            sql = u"hogehoge"
+        elif select == '*':
+            sql = u'select * from ' + tableName
+        else:
+            return {}
+        # where 句を追記していく
+        if len(where) > 0:
+            sql = sql + u' where '
+            for i in where:
+                sql = sql + i + "=" + where[i] + " "
+            #
+        #
+        # 実行
+        cursor.execute(sql)
+        # 取得したエントリーをほにゃほにゃする
+        # hogehoge
+        self.conn.commit()
+        cursor.close()
+ 
 
     # ファイルを読み込んで DB に登録する
     # ファイルは 一行目に,\t 区切りのカラム名，二行目以降に,\t 区切りに値を書いたタプル
