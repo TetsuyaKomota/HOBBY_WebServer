@@ -37,6 +37,8 @@ def admin():
 
 @app.route("/talk_room")
 def talk_room():
+    
+    agents['{0:04d}'.format(len(agents))] = HikariMain.Hikari()
     return render_template("talkRoom.html")
 
 @app.route("/react_study")
@@ -80,5 +82,4 @@ def Api_HikariChangeState():
 
 
 if __name__ == "__main__":
-    agents[0] = HikariMain.Hikari()
     app.run( debug = True, host=HOSTNAME, port=PORT)

@@ -15,7 +15,8 @@ var TalkRoom = React.createClass(
         changeState : function(){
 
             $.ajax({
-                url: 'http://13.113.169.250:5000/api/hikari_change_state',
+                // url: 'http://13.113.169.250:5000/api/hikari_change_state',
+                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_change_state',
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
                 data: {'query' : '今はこの入力に意味ないよ！'},
@@ -28,7 +29,8 @@ var TalkRoom = React.createClass(
 
         talk : function(){
             $.ajax({
-                url: 'http://13.113.169.250:5000/api/hikari_talk',
+                // url: 'http://13.113.169.250:5000/api/hikari_talk',
+                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_talk',
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
                 data: {'query' : 'API の要素を反映できたよ！'},
