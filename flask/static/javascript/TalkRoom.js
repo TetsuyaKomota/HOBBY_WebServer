@@ -3,13 +3,31 @@ var TalkRoom = React.createClass(
         getInitialState : function(){
             return {
                 face        : "normal",
-                image_src   : "",
-                talk        : "やっほー"
+                image_src   : "/static/images/talkRoom/TalkAI_graphics_normal.png",
+                talk        : "やっほー",
+                idx         : ""
             };
         },
 
         componentDidMount : function(){
-            this.changeState(this.state.face);
+            this.createAgent();
+            // this.changeState(this.state.face);
+        },
+
+        createAgent : function(){
+
+            $.ajax({
+                // url: 'http://13.113.169.250:5000/api/hikari_change_state',
+                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_start_conversation',
+                Type: 'GET',
+                scriptCharset: 'UTF-8',
+                data: {},
+                dataType: 'json', 
+                cache: false,
+            }).done(function(data){
+                this.setState({idx : data.new_idx})
+                console.log("通ったよ"+data.new_idx)
+            }.bind(this));
         },
 
         changeState : function(){
@@ -19,7 +37,10 @@ var TalkRoom = React.createClass(
                 url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_change_state',
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
-                data: {'query' : '今はこの入力に意味ないよ！'},
+                data: {
+                    'query' : '今はこの入力に意味ないよ！',
+                    'idx'   : this.state.idx
+                },
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){
@@ -33,7 +54,10 @@ var TalkRoom = React.createClass(
                 url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_talk',
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
-                data: {'query' : 'API の要素を反映できたよ！'},
+                data: {
+                    'query' : 'API の要素を反映できたよ！',
+                    'idx'   : this.state.idx
+                },
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){

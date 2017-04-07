@@ -11,6 +11,7 @@ from models.hikari import HikariMain
 
 from controllers.BookInsert import bookInsert
 from controllers.BookInfo import bookInfo
+from controllers.HikariStartConversation import hikariStartConversation
 from controllers.HikariTalk import hikariTalk
 from controllers.HikariChangeState import hikariChangeState
 
@@ -70,14 +71,18 @@ def Api_BookInsert():
 
 # -----------------------------------------------------------
 # ひかりちゃん用 API
+    # エージェント生成
+@app.route("/api/hikari_start_conversation", methods=["GET"])
+def Api_HikariStartConversation():
+    return hikariStartConversation(request.args, HikariMain)
     # 対話を取得
 @app.route("/api/hikari_talk", methods=["GET"])
 def Api_HikariTalk():
-    return hikariTalk(request.args, agents[0])
+    return hikariTalk(request.args, HikariMain)
     # 感情遷移を取得
 @app.route("/api/hikari_change_state", methods=["GET"])
 def Api_HikariChangeState():
-    return hikariChangeState(request.args, agents[0])
+    return hikariChangeState(request.args, HikariMain)
 
 
 

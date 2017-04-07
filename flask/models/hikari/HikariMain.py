@@ -6,6 +6,8 @@ import random
 
 # ひかりちゃんAI クラス
 
+agents = {}
+
 class Hikari:
 
     def __init__(self):

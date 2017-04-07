@@ -3,9 +3,11 @@
 import json
 from models.hikari import HikariMain
 
-def hikariChangeState(args, h):
+def hikariChangeState(args, hikariMain):
 
     # h = HikariMain.Hikari()
+
+    h = hikariMain.agents[args.get("idx", '')]
 
     output = {}
     output['success'] = True
