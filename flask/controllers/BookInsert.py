@@ -1,7 +1,7 @@
 import json
-from lib.DBController import Inserter
+from lib.DBController import Ksql
 def bookInsert(args):
-    token = Inserter.Inserter()
+    token = Ksql.Ksql()
     token.changeConnection(dbName="PMAN_DB")
     values = {}
     if isinstance(args.get("isbn", ''), str):

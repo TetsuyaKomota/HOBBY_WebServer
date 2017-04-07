@@ -4,7 +4,7 @@ from setting import DBC_USERNAME, DBC_PASSWORD, DBC_HOST, DBC_DBNAME
 
 import MySQLdb
 
-class Inserter:
+class Ksql:
 
     def __init__(self):
 
