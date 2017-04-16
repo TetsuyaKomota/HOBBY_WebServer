@@ -18,7 +18,7 @@ def echo_current_time():
 
     now = datetime.now()
     # EC2 上ではなぜか9時間 遅れているようなので，調整
-    return "今は " + str(now.month) + "月" + str(now.day) + "日 の " + str((now.hour + 9) % 24) + "時" + str(now.minute) + "分 だよ"
+    return ("今は " + str(now.month) + "月" + str(now.day) + "日 の " + str((now.hour + 9) % 24) + "時" + str(now.minute) + "分 だよ").decode("utf-8")
 
 if __name__ == "__main__":
     print(echo_current_time())

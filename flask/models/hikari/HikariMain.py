@@ -2,7 +2,11 @@
 
 from setting import HIKARI_USERNAME as USERNAME
 from lib.DBController import Ksql
+
+from hikari_models import HikariReply
+
 import random
+
 
 # ひかりちゃんAI クラス
 
@@ -23,7 +27,7 @@ class Hikari:
         self.stateLib.append("shy")
 
     def talk(self, query):
-
+        '''
         k = Ksql.Ksql()
         if self.stateLib[self.stateIdx] == "normal":
             res = k.select("quotation", where = {"key_id" : "6"})
@@ -32,6 +36,8 @@ class Hikari:
         
         # return "やったね，モデルを経由したよ！"
         return res[0][1]
+        '''
+        return HikariReply.echo_current_time()
 
     def changeState(self, query):
         
