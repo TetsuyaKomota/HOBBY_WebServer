@@ -4,7 +4,7 @@ var TalkRoom = React.createClass(
             return {
                 face        : "normal",
                 image_src   : "/static/images/talkRoom/TalkAI_graphics_normal.png",
-                talk        : "やっほー",
+                talk        : "こんにちは．",
                 idx         : ""
             };
         },
@@ -12,6 +12,10 @@ var TalkRoom = React.createClass(
         componentDidMount : function(){
             this.createAgent();
             // this.changeState(this.state.face);
+        },
+
+        componentWillUnmount : function(){
+            this.deleteAgent();
         },
 
         createAgent : function(){
@@ -26,9 +30,24 @@ var TalkRoom = React.createClass(
                 cache: false,
             }).done(function(data){
                 this.setState({idx : data.new_idx})
-                console.log("通ったよ"+data.new_idx)
             }.bind(this));
         },
+
+        deleteAgent : function(){
+
+            $.ajax({
+                // url: 'http://13.113.169.250:5000/api/hikari_change_state',
+                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_end_conversation',
+                Type: 'GET',
+                scriptCharset: 'UTF-8',
+                data: {'idx' : this.state.idx},
+                dataType: 'json', 
+                cache: false,
+            }).done(function(data){
+                console.log(data.num_of_agents); 
+            }.bind(this));
+        },
+
 
         changeState : function(){
 
@@ -55,7 +74,7 @@ var TalkRoom = React.createClass(
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
                 data: {
-                    'query' : 'API の要素を反映できたよ！',
+                    'query' : this.refs.query.value,
                     'idx'   : this.state.idx
                 },
                 dataType: 'json', 
@@ -66,7 +85,6 @@ var TalkRoom = React.createClass(
         },
 
         handleClick : function(){
-            console.log("やっほー");
             this.changeState();
             this.talk();
         },
@@ -80,7 +98,7 @@ var TalkRoom = React.createClass(
                     </div>
                     <div style={{display:"inline-block"}}>
                         <p>{this.state.talk}</p>
-                        <input type="button" value="なんか喋って" onClick={this.handleClick} />                
+                        <input ref="query" type="button" value="なんか喋って" onClick={this.handleClick} />                
                     </div>
                 </div>
             );

@@ -2,17 +2,12 @@
 
 import json
 
-def hikariStartConversation(args, hikariMain):
+def hikariEndConversation(args, hikariMain):
 
 
-    newIdx = '{0:04d}'.format(len(hikariMain.agents))
-
-    hikariMain.agents[newIdx] = hikariMain.Hikari()
+    del hikariMain.agents[args.get("idx", '')]
 
     output = {}
     output['success'] = True
-    output['new_idx'] = newIdx
     output['num_of_agents'] = len(hikariMain.agents)
     return json.dumps(output, indent=4, ensure_ascii=False)
-
-

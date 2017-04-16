@@ -14,7 +14,7 @@ from controllers.BookInfo import bookInfo
 from controllers.HikariStartConversation import hikariStartConversation
 from controllers.HikariTalk import hikariTalk
 from controllers.HikariChangeState import hikariChangeState
-
+from controllers.HikariEndConversation import hikariEndConversation
 
 app = Flask(__name__)
 
@@ -83,7 +83,11 @@ def Api_HikariTalk():
 @app.route("/api/hikari_change_state", methods=["GET"])
 def Api_HikariChangeState():
     return hikariChangeState(request.args, HikariMain)
-
+    # エージェント削除
+@app.route("/api/hikari_end_conversation", methods=["GET"])
+def Api_HikariEndConversation():
+    return hikariEndConversation(request.args, HikariMain)
+ 
 
 
 if __name__ == "__main__":
