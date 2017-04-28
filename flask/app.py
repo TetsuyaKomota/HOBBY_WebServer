@@ -35,6 +35,11 @@ def index():
 def admin():
     return render_template("admin.html")
 
+@app.route("/login_room")
+@requires_auth
+def login_room():
+    return render_template("loginRoom.html")
+
 @app.route("/talk_room")
 def talk_room():    
     # return render_template("talkRoom.html")
