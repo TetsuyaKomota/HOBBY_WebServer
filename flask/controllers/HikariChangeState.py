@@ -11,5 +11,5 @@ def hikariChangeState(args, hikariMain):
 
     output = {}
     output['success'] = True
-    output['state'] = h.changeState(args.get("query", '')).encode("utf-8")
+    output['state'] = h.stateChange(args.get("query", '')).encode("utf-8")
     return json.dumps(output, indent=4, ensure_ascii=False)

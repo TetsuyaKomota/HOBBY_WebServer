@@ -38,7 +38,7 @@ class Hikari:
         return res[0][1]
         # return HikariReply.echo_current_time()
 
-    def changeState(self, talk_id, query):
+    def stateChange(self, talk_id, query):
         
         # self.stateIdx = (self.stateIdx + 1) % len(self.stateLib)
         self.stateIdx = int(random.random() * len(self.stateLib))
@@ -50,6 +50,10 @@ class Hikari:
     # 引数に入れた文字列を返すだけ．デバッグ用
     def talkEcho(self, query):
         return query
+
+    # start_conversation 時に決定する最初の感情を生成する
+    def stateFirst(self, query):
+        return 0
 
     # start_conversation 時に返す最初の挨拶を生成する
     def talkFirst(self, query):
