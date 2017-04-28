@@ -10,13 +10,13 @@ import random
 
 # ひかりちゃんAI クラス
 
-talk_log = {}
 
 class Hikari:
 
     def __init__(self):
         self.user = USERNAME
         self.state = "normal"
+        self.talk_log = {}
         # 以下デバッグ
         self.stateIdx = 0
         self.stateLib = []
@@ -61,5 +61,5 @@ class Hikari:
 
 if __name__ == "__main__":
     h = Hikari()
-    h.talk_log["0000"] = []
+    h.self.talk_log["0000"] = []
     print(h.getReply("0000", "こんにちは"))

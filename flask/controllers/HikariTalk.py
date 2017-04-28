@@ -16,6 +16,7 @@ def hikariTalk(args, hikariMain):
 
     output = {}
     output['success'] = True
+    output['state'] = state
     output['response'] = response.encode("utf-8")
     return json.dumps(output, indent=4, ensure_ascii=False)
 
