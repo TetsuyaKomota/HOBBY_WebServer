@@ -4,7 +4,7 @@ var TalkRoom = React.createClass(
             return {
                 face        : "normal",
                 image_src   : "/static/images/talkRoom/TalkAI_graphics_normal.png",
-                talk        : "こんにちは．",
+                response    : "こんにちは．",
                 idx         : ""
             };
         },
@@ -80,7 +80,7 @@ var TalkRoom = React.createClass(
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){
-                this.setState({talk : data.talk});
+                this.setState({response : data.response});
             }.bind(this));
         },
 
@@ -97,7 +97,7 @@ var TalkRoom = React.createClass(
                         <img src={this.state.image_src} />
                     </div>
                     <div style={{display:"inline-block"}}>
-                        <p>{this.state.talk}</p>
+                        <p>{this.state.response}</p>
                         <input ref="query" type="button" value="なんか喋って" onClick={this.handleClick} />                
                     </div>
                 </div>
