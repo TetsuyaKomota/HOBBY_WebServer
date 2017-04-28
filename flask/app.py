@@ -1,9 +1,12 @@
 #-*- coding:utf-8 -*-
 
 from subprocess import check_output
-from flask import Flask, redirect, request, render_template
+from flask import Flask, redirect, request, render_template, make_response
 from utils.decorator_auth import requires_auth
 import json
+
+import time
+from datetime import datetime
 
 from setting import HOSTNAME, PORT
 # TODO この辺汚いからうまい書き方を考える
@@ -33,9 +36,14 @@ def admin():
     return render_template("admin.html")
 
 @app.route("/talk_room")
-def talk_room():
-    
-    return render_template("talkRoom.html")
+def talk_room():    
+    # return render_template("talkRoom.html")
+    content = render_template("talkRoom.html")
+    response = make_response(content) 
+    max_age = 60*60*24
+    expires = int(time.mktime(datetime.now().timetuple())) + max_age
+    response.set_cookie('keyName1', value="valueName1", max_age=max_age, expires=expires, path='/')
+    return response
 
 @app.route("/react_study")
 @requires_auth
