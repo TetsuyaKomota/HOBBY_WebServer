@@ -17,7 +17,7 @@ from controllers.HikariChangeState import hikariChangeState
 from controllers.HikariEndConversation import hikariEndConversation
 
 app = Flask(__name__)
-
+hikari = HikariMain.Hikari()
 
 @app.before_request
 def basic_auth():
@@ -70,19 +70,19 @@ def Api_BookInsert():
     # エージェント生成
 @app.route("/api/hikari_start_conversation", methods=["GET"])
 def Api_HikariStartConversation():
-    return hikariStartConversation(request.args, HikariMain)
+    return hikariStartConversation(request.args, hikari)
     # 対話を取得
 @app.route("/api/hikari_talk", methods=["GET"])
 def Api_HikariTalk():
-    return hikariTalk(request.args, HikariMain)
+    return hikariTalk(request.args, hikari)
     # 感情遷移を取得
 @app.route("/api/hikari_change_state", methods=["GET"])
 def Api_HikariChangeState():
-    return hikariChangeState(request.args, HikariMain)
+    return hikariChangeState(request.args, hikari)
     # エージェント削除
 @app.route("/api/hikari_end_conversation", methods=["GET"])
 def Api_HikariEndConversation():
-    return hikariEndConversation(request.args, HikariMain)
+    return hikariEndConversation(request.args, hikari)
  
 
 
