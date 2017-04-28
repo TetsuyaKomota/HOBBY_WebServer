@@ -5,7 +5,8 @@ var TalkRoom = React.createClass(
                 face        : "normal",
                 image_src   : "/static/images/talkRoom/TalkAI_graphics_normal.png",
                 response    : "こんにちは．",
-                idx         : ""
+                user_id     : "0000",
+                talk_id     : ""
             };
         },
 
@@ -21,26 +22,30 @@ var TalkRoom = React.createClass(
         createAgent : function(){
 
             $.ajax({
-                // url: 'http://13.113.169.250:5000/api/hikari_change_state',
                 url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_start_conversation',
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
-                data: {},
+                data: {
+                    'user_id' : this.state.user_id
+                },
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){
-                this.setState({idx : data.new_idx})
+                this.setState({talk_id : data.talk_id});
+                this.setState({response : data.response});
             }.bind(this));
         },
 
         deleteAgent : function(){
 
             $.ajax({
-                // url: 'http://13.113.169.250:5000/api/hikari_change_state',
                 url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_end_conversation',
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
-                data: {'idx' : this.state.idx},
+                data: {
+                    'user_id' : this.state.user_id,
+                    'talk_id' : this.state.talk_id
+                },
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){
@@ -52,13 +57,12 @@ var TalkRoom = React.createClass(
         changeState : function(){
 
             $.ajax({
-                // url: 'http://13.113.169.250:5000/api/hikari_change_state',
                 url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_change_state',
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
                 data: {
                     'query' : '今はこの入力に意味ないよ！',
-                    'idx'   : this.state.idx
+                    'talk_id'   : this.state.talk_id
                 },
                 dataType: 'json', 
                 cache: false,
@@ -69,23 +73,24 @@ var TalkRoom = React.createClass(
 
         talk : function(){
             $.ajax({
-                // url: 'http://13.113.169.250:5000/api/hikari_talk',
                 url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_talk',
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
                 data: {
                     'query' : this.refs.query.value,
-                    'idx'   : this.state.idx
+                    'talk_id'   : this.state.talk_id,
+                    'user_id'   : this.state.user_id
                 },
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){
                 this.setState({response : data.response});
+                this.setState({image_src : "/static/images/talkRoom/TalkAI_graphics_"+data.state+".png"});
             }.bind(this));
         },
 
         handleClick : function(){
-            this.changeState();
+            // this.changeState();
             this.talk();
         },
 
