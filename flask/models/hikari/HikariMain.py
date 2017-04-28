@@ -53,7 +53,8 @@ class Hikari:
 
     # start_conversation 時に決定する最初の感情を生成する
     def stateFirst(self, query):
-        return 0
+        self.state = 0
+        return self.state
 
     # start_conversation 時に返す最初の挨拶を生成する
     def talkFirst(self, query):

@@ -13,10 +13,13 @@ def hikariStartConversation(args, hikariMain):
 
     hikariMain.talk_log[newIdx] = []
 
+    query = ""
+    # HIKARI の stateFirst() を叩いて最初の感情を取得する
+    initState = hikariMain.stateFirst(query)
     # HIKARI の talkFirst() を叩いて最初の挨拶を取得する
-    response = hikariMain.talkFirst("")
+    response = hikariMain.talkFirst(query)
     # 取得した最初の挨拶を talk_log に保持
-    hikariMain.talk_log[newIdx].append(response)
+    hikariMain.talk_log[newIdx].append({"state":initState, "query";query, "response":response})
 
     # return
     output = {}
