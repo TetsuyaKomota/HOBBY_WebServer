@@ -27,7 +27,7 @@ class Hikari:
         self.stateLib.append("doubt")
         self.stateLib.append("shy")
 
-    def talk(self, query):
+    def getReply(self, talk_id, query):
         k = Ksql.Ksql()
         if self.stateLib[self.stateIdx] == "normal":
             res = k.select("quotation", where = {"key_id" : "6"})
@@ -38,7 +38,7 @@ class Hikari:
         return res[0][1]
         # return HikariReply.echo_current_time()
 
-    def changeState(self, query):
+    def changeState(self, talk_id, query):
         
         # self.stateIdx = (self.stateIdx + 1) % len(self.stateLib)
         self.stateIdx = int(random.random() * len(self.stateLib))
@@ -57,4 +57,5 @@ class Hikari:
 
 if __name__ == "__main__":
     h = Hikari()
-    print(h.talk("こんにちは"))
+    h.talk_log["0000"] = []
+    print(h.getReply("0000", "こんにちは"))
