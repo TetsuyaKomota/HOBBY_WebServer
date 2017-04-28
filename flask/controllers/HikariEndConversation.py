@@ -5,9 +5,9 @@ import json
 def hikariEndConversation(args, hikariMain):
 
 
-    del hikariMain.agents[args.get("idx", '')]
+    del hikariMain.talk_log[args.get("talk_id", '')]
 
     output = {}
     output['success'] = True
-    output['num_of_agents'] = len(hikariMain.agents)
+    output['num_of_talk'] = len(hikariMain.talk_log)
     return json.dumps(output, indent=4, ensure_ascii=False)
