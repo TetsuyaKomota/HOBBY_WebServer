@@ -4,15 +4,25 @@ import json
 
 def hikariStartConversation(args, hikariMain):
 
+    # HIKARI の talk_log にエントリーを追加する
 
-    newIdx = '{0:04d}'.format(len(hikariMain.agents))
+    newIdx = len(hikariMain.talk_log)
+    while '{0:04d}'.format(newIdx) in hikariMain.talk_log.keys():
+        newIdx = newIdx + 1
+    newIdx = '{0:04d}'.format(newIdx)
 
-    hikariMain.agents[newIdx] = hikariMain.Hikari()
+    hikariMain.talk_log[newIdx] = []
 
+    # HIKARI の talkFirst() を叩いて最初の挨拶を取得する
+    response = hikariMain.talkFirst("")
+    # 取得した最初の挨拶を talk_log に保持
+    hikariMain.talk_log[newIdx].append(response)
+
+    # return
     output = {}
-    output['success'] = True
-    output['new_idx'] = newIdx
-    output['num_of_agents'] = len(hikariMain.agents)
+    output['talk_id'] = newIdx
+    output['num_of_talk'] = len(hikariMain.talk_log)
+    output['response'] = response
     return json.dumps(output, indent=4, ensure_ascii=False)
 
 

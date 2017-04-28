@@ -11,6 +11,7 @@ import random
 # ひかりちゃんAI クラス
 
 agents = {}
+talk_log = {}
 
 class Hikari:
 
@@ -27,7 +28,6 @@ class Hikari:
         self.stateLib.append("shy")
 
     def talk(self, query):
-        '''
         k = Ksql.Ksql()
         if self.stateLib[self.stateIdx] == "normal":
             res = k.select("quotation", where = {"key_id" : "6"})
@@ -36,8 +36,7 @@ class Hikari:
         
         # return "やったね，モデルを経由したよ！"
         return res[0][1]
-        '''
-        return HikariReply.echo_current_time()
+        # return HikariReply.echo_current_time()
 
     def changeState(self, query):
         
@@ -49,8 +48,12 @@ class Hikari:
         return self.state
 
     # 引数に入れた文字列を返すだけ．デバッグ用
-    def talk_echo(self, query):
+    def talkEcho(self, query):
         return query
+
+    # start_conversation 時に返す最初の挨拶を生成する
+    def talkFirst(self, query):
+        return "あ，いらっしゃい．"
 
 if __name__ == "__main__":
     h = Hikari()
