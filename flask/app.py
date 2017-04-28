@@ -13,7 +13,6 @@ from controllers.BookInsert import bookInsert
 from controllers.BookInfo import bookInfo
 from controllers.HikariStartConversation import hikariStartConversation
 from controllers.HikariTalk import hikariTalk
-from controllers.HikariChangeState import hikariChangeState
 from controllers.HikariEndConversation import hikariEndConversation
 
 app = Flask(__name__)
@@ -75,10 +74,6 @@ def Api_HikariStartConversation():
 @app.route("/api/hikari_talk", methods=["GET"])
 def Api_HikariTalk():
     return hikariTalk(request.args, hikari)
-    # 感情遷移を取得
-@app.route("/api/hikari_change_state", methods=["GET"])
-def Api_HikariChangeState():
-    return hikariChangeState(request.args, hikari)
     # エージェント削除
 @app.route("/api/hikari_end_conversation", methods=["GET"])
 def Api_HikariEndConversation():

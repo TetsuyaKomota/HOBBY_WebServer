@@ -12,7 +12,6 @@ var TalkRoom = React.createClass(
 
         componentDidMount : function(){
             this.createAgent();
-            // this.changeState(this.state.face);
         },
 
         componentWillUnmount : function(){
@@ -53,24 +52,6 @@ var TalkRoom = React.createClass(
             }.bind(this));
         },
 
-
-        changeState : function(){
-
-            $.ajax({
-                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_change_state',
-                Type: 'GET',
-                scriptCharset: 'UTF-8',
-                data: {
-                    'query' : '今はこの入力に意味ないよ！',
-                    'talk_id'   : this.state.talk_id
-                },
-                dataType: 'json', 
-                cache: false,
-            }).done(function(data){
-                this.setState({image_src : "/static/images/talkRoom/TalkAI_graphics_"+data.state+".png"})
-            }.bind(this));
-        },
-
         talk : function(){
             $.ajax({
                 url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_talk',
@@ -90,7 +71,6 @@ var TalkRoom = React.createClass(
         },
 
         handleClick : function(){
-            // this.changeState();
             this.talk();
         },
 
