@@ -18,9 +18,6 @@ from controllers.HikariEndConversation import hikariEndConversation
 
 app = Flask(__name__)
 
-agents = {}
-
-log = {}
 
 @app.before_request
 def basic_auth():
@@ -39,7 +36,6 @@ def admin():
 @app.route("/talk_room")
 def talk_room():
     
-    agents['{0:04d}'.format(len(agents))] = HikariMain.Hikari()
     return render_template("talkRoom.html")
 
 @app.route("/react_study")

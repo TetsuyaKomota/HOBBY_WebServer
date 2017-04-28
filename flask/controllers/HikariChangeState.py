@@ -5,11 +5,12 @@ from models.hikari import HikariMain
 
 def hikariChangeState(args, hikariMain):
 
-    # h = HikariMain.Hikari()
+    talk_id = args.get("talk_id", '')
+    query = args.get("query", '')
 
-    h = hikariMain.agents[args.get("idx", '')]
+    state = hikariMain.stateChange(talk_id, query)
 
     output = {}
     output['success'] = True
-    output['state'] = h.stateChange(args.get("query", '')).encode("utf-8")
+    output['state'] = state.encode("utf-8")
     return json.dumps(output, indent=4, ensure_ascii=False)

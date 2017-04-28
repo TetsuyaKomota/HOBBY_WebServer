@@ -44,7 +44,7 @@ var TalkRoom = React.createClass(
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){
-                console.log(data.num_of_agents); 
+                console.log(data.num_of_talk); 
             }.bind(this));
         },
 

@@ -10,7 +10,6 @@ import random
 
 # ひかりちゃんAI クラス
 
-agents = {}
 talk_log = {}
 
 class Hikari:
