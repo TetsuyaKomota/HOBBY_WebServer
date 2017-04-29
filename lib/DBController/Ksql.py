@@ -123,7 +123,7 @@ class Ksql:
                     sql = sql + ", "
                 #
             #
-            sql = sql + " from "
+            sql = sql + " from " + tableName
         elif select == '*':
             sql = u'select * from ' + tableName
         else:
