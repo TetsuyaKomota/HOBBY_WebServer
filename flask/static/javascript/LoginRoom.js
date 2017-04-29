@@ -49,7 +49,7 @@ var TalkRoom = React.createClass(
                                 ユーザーID:  <input type="text" name="client_id" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
-                                パスワード:    <input type="text" name="talk_id" onKeyPress={this.handleInput} size="100" />
+                                パスワード:    <input type="password" name="talk_id" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
                                 <input type="submit" value="OK" />
@@ -58,12 +58,17 @@ var TalkRoom = React.createClass(
                     </div>
                     <div>
                         <p>新規登録</p>
+                        <p>注意！！</p>
+                        <p>現在パスワードは超気休めです！わかりやすく言うとPOST データ見れば簡単に覗けます！</p>
+                        <p>ハッシュ化すらしてません！生のままです！パスワードとは？</p>
+                        <p>「いつも使ってるパスワード」とかの入力は絶対にやめてください！</p>
+                        <p>パスワードは空でも登録できます！</p>
                         <form action="/api/hikari_create_user" method="POST">
                             <p>
-                                ユーザーID:  <input type="text" name="client_id" onKeyPress={this.handleInput} size="100" />
+                                ユーザーID:  <input type="text" name="user_name" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
-                                パスワード:    <input type="text" name="talk_id" onKeyPress={this.handleInput} size="100" />
+                                パスワード:    <input type="password" name="password" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
                                 <input type="submit" value="OK" />
@@ -77,7 +82,7 @@ var TalkRoom = React.createClass(
                                 ユーザーID:  <input type="text" name="client_id" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
-                                パスワード:    <input type="text" name="talk_id" onKeyPress={this.handleInput} size="100" />
+                                パスワード:    <input type="password" name="talk_id" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
                                 <input type="submit" value="OK" />
