@@ -83,7 +83,7 @@ def Api_BookInsert():
 # ------------------------------------------------------
     # ログイン処理用 API
         # ユーザー名のバリデーションチェック
-@app.route("/api/hikari_user_validation", methods=["POST"])
+@app.route("/api/hikari_user_validation", methods=["GET", "POST"])
 def Api_HikariUserValidation():
     return hikariUserValidation(request.form, hikari)
 # ------------------------------------------------------
