@@ -55,8 +55,12 @@ class Hikari:
     # 使用不可能な文字タイプかないかどうか判定する
     def isValidCharType(self, text):
         result = True
-        for char in text:
-            charType = unicodedata.name(char.decode("utf-8")).split(" ")[0]
+        if isinstance(text, unicode) == True:
+            t = text
+        else:
+            t = text.decode("utf-8")
+        for char in t:
+            charType = unicodedata.name(char).split(" ")[0]
             if charType in ["FULLWIDTH", "HALFWIDTH"]:
                 charType = unicodedata.name(char).split(" ")[1]
             if (charType in HIKARI_VALID_CHAR_TYPE) == False:
@@ -73,11 +77,25 @@ class Hikari:
         else:
             n = name.decode("utf-8")
         #
-        for e in k.select(u"user", select = {"user_name":0}):
+        for e in k.select(u"user", select = {u"user_name":0}):
             users.append(e[0])
         if n in users:
             result = False
         return result 
+
+    # 新規登録
+    def createUser(self, userName, password):
+        result = True
+        message = ""
+        # 最後にもう一度バリデーションを通す
+        status = self.isValidUserName(userName)
+        if status[0] == False:
+            result = status[0]
+            message = status[1]
+        else:
+            k = Ksql.Ksql()
+            k.insert(u"user", values = {u"user_name" : userName, u"password" : password})
+        return [result, message]
 
 # =================================================================================================================
 # state 関係メソッド
@@ -119,4 +137,5 @@ if __name__ == "__main__":
     h = Hikari()
     # h.self.talk_log["0000"] = []
     # print(h.getReply("0000", "こんにちは"))
-    print(h.isValidUserName("takeshi"))
+    # print(h.isValidUserName("takeshi"))
+    print(h.createUser(u"シゲル","3141592653"))
