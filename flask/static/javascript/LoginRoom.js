@@ -14,10 +14,10 @@ var TalkRoom = React.createClass(
 
         handleInput : function(e){
             console.log("inputed." + e.key);
-            if(e.key === 'j'){
+            if(e.key === ' '){
                 $.ajax({
                     url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_user_validation',
-                    Type: 'POST',
+                    type: 'POST',
                     scriptCharset: 'UTF-8',
                     data: {
                         'user_name' : e.target.value
@@ -37,7 +37,7 @@ var TalkRoom = React.createClass(
                         <p>ログイン</p>
                         <form action="/talk_room" method="POST">
                             <p>
-                                ユーザーID:  <input type="text" name="client_id" defaultValue="0000000000" onKeyPress={this.handleInput} size="100" />
+                                ユーザーID:  <input type="text" name="client_id" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
                                 パスワード:    <input type="text" name="talk_id" onKeyPress={this.handleInput} size="100" />
@@ -49,9 +49,9 @@ var TalkRoom = React.createClass(
                     </div>
                     <div>
                         <p>新規登録</p>
-                        <form action="/talk_room" method="post">
+                        <form action="/talk_room" method="POST">
                             <p>
-                                ユーザーID:  <input type="text" name="client_id" value="0000000000" onKeyPress={this.handleInput} size="100" />
+                                ユーザーID:  <input type="text" name="client_id" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
                                 パスワード:    <input type="text" name="talk_id" onKeyPress={this.handleInput} size="100" />
@@ -65,7 +65,7 @@ var TalkRoom = React.createClass(
                         <p>退会</p>
                         <form action="/talk_room" method="post">
                             <p>
-                                ユーザーID:  <input type="text" name="client_id" value="0000000000" onKeyPress={this.handleInput} size="100" />
+                                ユーザーID:  <input type="text" name="client_id" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
                                 パスワード:    <input type="text" name="talk_id" onKeyPress={this.handleInput} size="100" />
