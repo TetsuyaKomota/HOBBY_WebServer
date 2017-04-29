@@ -58,7 +58,7 @@ var TalkRoom = React.createClass(
                     </div>
                     <div>
                         <p>新規登録</p>
-                        <form action="/talk_room" method="GET">
+                        <form action="/api/hikari_create_user" method="POST">
                             <p>
                                 ユーザーID:  <input type="text" name="client_id" onKeyPress={this.handleInput} size="100" />
                             </p>

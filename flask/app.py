@@ -15,6 +15,7 @@ from models.hikari import HikariMain
 from controllers.BookInsert import bookInsert
 from controllers.BookInfo import bookInfo
 from controllers.HikariUserValidation import hikariUserValidation
+from controllers.HikariCreateUser import hikariCreateUser
 from controllers.HikariStartConversation import hikariStartConversation
 from controllers.HikariTalk import hikariTalk
 from controllers.HikariEndConversation import hikariEndConversation
@@ -86,6 +87,10 @@ def Api_BookInsert():
 @app.route("/api/hikari_user_validation", methods=["POST"])
 def Api_HikariUserValidation():
     return hikariUserValidation(request.form, hikari)
+        # 新規登録
+@app.route("/api/hikari_create_user", methods=["POST"])
+def Api_HikariCreateUser():
+    return hikariCreateUser(request.form, hikari)
 # ------------------------------------------------------
     # メイン画面用 API
         # エージェント生成
