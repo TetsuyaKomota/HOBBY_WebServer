@@ -1,11 +1,13 @@
 #-*- coding:utf-8 -*-
 
+import random
+import unicodedata
+
 from setting import HIKARI_USERNAME as USERNAME
+from setting import HIKARI_MAX_USER_NAME_LENGTH, HIKARI_VALID_CHAR_TYPE
 from lib.DBController import Ksql
 
 from hikari_models import HikariReply
-
-import random
 
 
 # ひかりちゃんAI クラス
@@ -26,16 +28,63 @@ class Hikari:
         self.stateLib.append("doubt")
         self.stateLib.append("shy")
 
-    def getReply(self, talk_id, query):
+
+    # ユーザー名のバリデーション処理
+    def isValidUserName(self, name):
+        result = True
+        message = ""
+        # ユーザー名が空でないか
+        if len(name) == 0:
+            result = False
+            message = "void name."
+        # 不適切な文字が含まれていないか
+        elif self.isValidCharType(name)  == False:
+            result = False
+            message = "include invalid charactor."
+        # ユーザー名の長さが適切か
+        elif len(name) > HIKARI_MAX_USER_NAME_LENGTH:
+            result = False
+            message = "too long."
+        # 既に存在する名前でないか
+        elif self.isNewUserName(name) == False:
+            result = False
+            message = "already exist."
+           
+        return [result, message]
+
+    # 使用不可能な文字タイプかないかどうか判定する
+    def isValidCharType(self, text):
+        result = True
+        for char in text:
+            charType = unicodedata.name(char.decode("utf-8")).split(" ")[0]
+            if charType in ["FULLWIDTH", "HALFWIDTH"]:
+                charType = unicodedata.name(char).split(" ")[1]
+            if (charType in HIKARI_VALID_CHAR_TYPE) == False:
+                reulst = False
+                break
+        return result
+    # 既に存在するユーザーでないか判定する
+    def isNewUserName(self, name):
+        result = True
         k = Ksql.Ksql()
-        if self.stateLib[self.stateIdx] == "normal":
-            res = k.select("quotation", where = {"key_id" : "6"})
+        users = []
+        if isinstance(name, unicode) == True:
+            n = name
         else:
-            res = k.select("quotation", where = {"match_" + self.stateLib[self.stateIdx] : "1"})
-        
-        # return "やったね，モデルを経由したよ！"
-        return res[0][1]
-        # return HikariReply.echo_current_time()
+            n = name.decode("utf-8")
+        #
+        for e in k.select(u"user", select = {"user_name":0}):
+            users.append(e[0])
+        if n in users:
+            result = False
+        return result 
+
+# =================================================================================================================
+# state 関係メソッド
+    # start_conversation 時に決定する最初の感情を生成する
+    def stateFirst(self, query):
+        self.state = "normal"
+        return self.state
 
     def stateChange(self, talk_id, query):
         
@@ -46,20 +95,28 @@ class Hikari:
 
         return self.state
 
+# =================================================================================================================
+# talk 関係メソッド
+   # start_conversation 時に返す最初の挨拶を生成する
+    def talkFirst(self, query):
+        return "あ，いらっしゃい．"
+
+    def getReply(self, talk_id, query):
+        k = Ksql.Ksql()
+        if self.stateLib[self.stateIdx] == "normal":
+            res = k.select("quotation", where = {"key_id" : "6"})
+        else:
+            res = k.select("quotation", where = {"match_" + self.stateLib[self.stateIdx] : "1"})
+        
+        return res[0][1]
+        # return HikariReply.echo_current_time()
+
     # 引数に入れた文字列を返すだけ．デバッグ用
     def talkEcho(self, query):
         return query
 
-    # start_conversation 時に決定する最初の感情を生成する
-    def stateFirst(self, query):
-        self.state = "normal"
-        return self.state
-
-    # start_conversation 時に返す最初の挨拶を生成する
-    def talkFirst(self, query):
-        return "あ，いらっしゃい．"
-
 if __name__ == "__main__":
     h = Hikari()
-    h.self.talk_log["0000"] = []
-    print(h.getReply("0000", "こんにちは"))
+    # h.self.talk_log["0000"] = []
+    # print(h.getReply("0000", "こんにちは"))
+    print(h.isValidUserName("takeshi"))
