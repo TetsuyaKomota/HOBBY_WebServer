@@ -16,7 +16,6 @@ var TalkRoom = React.createClass(
 
         handleInput : function(e){
             var date = new Date();
-            console.log(date.getTime());
             this.setState({last_input : date.getTime()});
             setTimeout(this.checkValidation, this.state.delay, e.target);
         },
