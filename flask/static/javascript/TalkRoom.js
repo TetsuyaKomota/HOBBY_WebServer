@@ -12,6 +12,8 @@ var TalkRoom = React.createClass(
 
         componentDidMount : function(){
             this.createAgent();
+            // login 情報を切り出してくる
+            this.setState({user_id : document.cookie.split("login=")[1].split(";")[0]});
         },
 
         componentWillUnmount : function(){
@@ -19,7 +21,6 @@ var TalkRoom = React.createClass(
         },
 
         createAgent : function(){
-
             $.ajax({
                 url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_start_conversation',
                 Type: 'GET',
@@ -36,7 +37,6 @@ var TalkRoom = React.createClass(
         },
 
         deleteAgent : function(){
-
             $.ajax({
                 url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_end_conversation',
                 Type: 'GET',
