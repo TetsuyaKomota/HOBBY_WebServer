@@ -105,18 +105,30 @@ class Hikari:
         if self.isNewUserName(userName) == True:
             result = False
             message = "userName or password is/are wrong..."
-        elif self.isCollectPassword(userName, password) == False:
-            result = False
-            message = "userName or password is/are wrong..."
+        else:
+            c = self.isCollectPassword(userName, password)
+            if c[0] == False:
+                result = False
+                message = "userName or password is/are wrong..."
+            else:
+                message = str(c[1])
         return [result, message]   
  
-    # 指定したユーザーのパスワードが正しいか判定
+    # 指定したユーザーのパスワードが正しいか判定. 正しい場合は id を一緒に送る
     def isCollectPassword(self, userName, password):
         result = True
+        userId = -1
         k = Ksql.Ksql()
-        if len(k.select(u"user", where={u"user_name" : userName, "password" : password})) != 1:
+        if isinstance(userName, unicode) == True:
+            n = userName
+        else:
+            n = userName.decode("utf-8")
+        user = k.select(u"user", where={u"user_name" : n, u"password" : password})
+        if len(user) != 1:
             result = False
-        return result
+        else:
+            userId = user[0][0]
+        return [result, userId]
 # =================================================================================================================
 # state 関係メソッド
     # start_conversation 時に決定する最初の感情を生成する

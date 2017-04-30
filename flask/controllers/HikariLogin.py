@@ -24,5 +24,5 @@ def hikariLogin(form, hikariMain):
         response = make_response(content) 
         max_age = HIKARI_SESSION_TIME
         expires = int(time.mktime(datetime.now().timetuple())) + max_age
-        response.set_cookie('login', value="success", max_age=max_age, expires=expires, path='/')
+        response.set_cookie('login', value=status[1], max_age=max_age, expires=expires, path='/')
         return response
