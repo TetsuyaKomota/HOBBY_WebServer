@@ -63,7 +63,6 @@ class Hikari:
             charType = unicodedata.name(char).split(" ")[0]
             if charType in ["FULLWIDTH", "HALFWIDTH"]:
                 charType = unicodedata.name(char).split(" ")[1]
-            print(char + u":" + charType)
             if (charType in HIKARI_VALID_CHAR_TYPE) == False:
                 result = False
                 break
