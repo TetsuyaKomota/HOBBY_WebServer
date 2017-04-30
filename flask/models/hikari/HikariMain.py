@@ -63,8 +63,9 @@ class Hikari:
             charType = unicodedata.name(char).split(" ")[0]
             if charType in ["FULLWIDTH", "HALFWIDTH"]:
                 charType = unicodedata.name(char).split(" ")[1]
+            print(char + u":" + charType)
             if (charType in HIKARI_VALID_CHAR_TYPE) == False:
-                reulst = False
+                result = False
                 break
         return result
     # 既に存在するユーザーでないか判定する
@@ -169,5 +170,8 @@ if __name__ == "__main__":
     h = Hikari()
     # h.self.talk_log["0000"] = []
     # print(h.getReply("0000", "こんにちは"))
-    # print(h.isValidUserName("takeshi"))
-    print(h.createUser(u"シゲル","3141592653"))
+    print(h.isValidUserName("takeshi"))
+    print(h.isValidUserName("さとし"))
+    print(h.isValidUserName("つぎは？"))
+    print(h.isValidUserName("masa@横浜"))
+    # print(h.createUser(u"シゲル","3141592653"))
