@@ -120,11 +120,11 @@ class Ksql:
                 count = count + 1
                 sql = sql + i
                 if count < len(select):
-                    sql = sql + ", "
+                    sql = sql + u", "
                 #
             #
-            sql = sql + " from " + tableName
-        elif select == '*':
+            sql = sql + u" from " + tableName
+        elif select == u'*':
             sql = u'select * from ' + tableName
         else:
             return {}
@@ -136,16 +136,15 @@ class Ksql:
                 count = count + 1
                 # 値が数値じゃない場合はリバースクォーテーションを付ける
                 if where[i].isdigit() == False:
-                    sql = sql + i + "='" + where[i] + "' "
+                    sql = sql + i + u"='" + where[i] + u"' "
                 else:
-                    sql = sql + i + "=" + where[i] + " "
+                    sql = sql + i + u"=" + where[i] + u" "
                 if count < len(where):
-                    sql = sql + "and "
+                    sql = sql + u"and "
                 #
             #
         #
         # 実行
-        print(sql)
         cursor.execute(sql)
         # 取得したエントリーをほにゃほにゃする
         output = cursor.fetchall()
