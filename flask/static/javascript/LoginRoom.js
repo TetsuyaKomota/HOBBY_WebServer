@@ -46,10 +46,10 @@ var TalkRoom = React.createClass(
                         <p>ログイン</p>
                         <form action="/api/hikari_login" method="POST">
                             <p>
-                                ユーザーID:  <input type="text" name="client_id" onKeyPress={this.handleInput} size="100" />
+                                ユーザーID:  <input type="text" name="user_name" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
-                                パスワード:    <input type="password" name="talk_id" onKeyPress={this.handleInput} size="100" />
+                                パスワード:    <input type="password" name="password" onKeyPress={this.handleInput} size="100" />
                             </p>
                             <p>
                                 <input type="submit" value="OK" />

@@ -97,6 +97,26 @@ class Hikari:
             k.insert(u"user", values = {u"user_name" : userName, u"password" : password})
         return [result, message]
 
+    # ログイン
+    def login(self, userName, password):
+        result = True
+        message = ""
+        # user テーブルに存在する名前か確認する
+        if self.isNewUserName(userName) == True:
+            result = False
+            message = "userName or password is/are wrong..."
+        elif self.isCollectPassword(userName, password) == False:
+            result = False
+            message = "userName or password is/are wrong..."
+        return [result, message]   
+ 
+    # 指定したユーザーのパスワードが正しいか判定
+    def isCollectPassword(self, userName, password):
+        result = True
+        k = Ksql.Ksql()
+        if len(k.select(u"user", where={u"user_name" : userName, "password" : password})) != 1:
+            result = False
+        return result
 # =================================================================================================================
 # state 関係メソッド
     # start_conversation 時に決定する最初の感情を生成する
