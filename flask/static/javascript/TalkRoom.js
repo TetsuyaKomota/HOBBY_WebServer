@@ -76,6 +76,9 @@ var TalkRoom = React.createClass(
             if(this.state.lock_flg == true){
                 return
             }
+            else if(this.refs.query.value===""){
+                return
+            }
             else if(e.key==="Enter"){
                 this.setState({lock_flg : true});
                 this.addLog("ひかり &gt; " + this.state.response);
@@ -93,14 +96,14 @@ var TalkRoom = React.createClass(
             return (
                 <div>
                     <h1>ひかりちゃんの部屋</h1>
-                    <div style={{display:"inline-block"}}>
-                        <img src={this.state.image_src} />
-                    </div>
-                    <div style={{display:"inline-block"}}>
+                   <div style={{display:"inline-block"}}>
                         <input ref="query" type="text" size="100" onKeyPress={this.handleKeyPress} />
-                        <p>{this.state.response}</p>
+                        <p>ひかり &gt; {this.state.response}</p>
                         <div id="holder">
                         </div>
+                    </div>
+                    <div style={{display:"inline-block"}}>
+                        <img src={this.state.image_src} />
                     </div>
                 </div>
             );
