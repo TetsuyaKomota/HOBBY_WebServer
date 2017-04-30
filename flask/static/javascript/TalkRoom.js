@@ -6,7 +6,8 @@ var TalkRoom = React.createClass(
                 image_src   : "/static/images/talkRoom/TalkAI_graphics_normal.png",
                 response    : "こんにちは．",
                 user_id     : "0000",
-                talk_id     : ""
+                talk_id     : "",
+                lock_flg    : false,
             };
         },
 
@@ -67,11 +68,19 @@ var TalkRoom = React.createClass(
             }).done(function(data){
                 this.setState({response : data.response});
                 this.setState({image_src : "/static/images/talkRoom/TalkAI_graphics_"+data.state+".png"});
+                this.setState({lock_flg : false})
             }.bind(this));
         },
 
-        handleClick : function(){
-            this.talk();
+        handleKeyPress : function(e){
+            if(this.state.lock_flg == true){
+                return
+            }
+            else if(e.key==="Enter"){
+                this.setState({lock_flg : true});
+                this.talk();
+                this.refs.query.value = "";
+            }
         },
 
         render : function(){
@@ -83,7 +92,7 @@ var TalkRoom = React.createClass(
                     </div>
                     <div style={{display:"inline-block"}}>
                         <p>{this.state.response}</p>
-                        <input ref="query" type="button" value="なんか喋って" onClick={this.handleClick} />                
+                        <input ref="query" type="text" size="100" onKeyPress={this.handleKeyPress} />
                     </div>
                 </div>
             );
