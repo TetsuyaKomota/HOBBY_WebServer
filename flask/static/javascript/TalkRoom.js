@@ -78,9 +78,15 @@ var TalkRoom = React.createClass(
             }
             else if(e.key==="Enter"){
                 this.setState({lock_flg : true});
+                this.addLog("ひかり &gt; " + this.state.response);
+                this.addLog(this.refs.query.value);
                 this.talk();
                 this.refs.query.value = "";
             }
+        },
+        
+        addLog : function(text) {
+            document.getElementById('holder').innerHTML = '<p>' + text + '</p>\n' + document.getElementById('holder').innerHTML;
         },
 
         render : function(){
@@ -91,8 +97,10 @@ var TalkRoom = React.createClass(
                         <img src={this.state.image_src} />
                     </div>
                     <div style={{display:"inline-block"}}>
-                        <p>{this.state.response}</p>
                         <input ref="query" type="text" size="100" onKeyPress={this.handleKeyPress} />
+                        <p>{this.state.response}</p>
+                        <div id="holder">
+                        </div>
                     </div>
                 </div>
             );
