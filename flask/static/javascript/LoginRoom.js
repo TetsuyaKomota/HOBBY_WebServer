@@ -4,7 +4,8 @@ var TalkRoom = React.createClass(
             return {
                 talk_id     : "",
                 last_input  : 9999999999999,
-                delay       : 1000
+                delay       : 1000,
+                message     : "message"
             };
         },
 
@@ -34,7 +35,7 @@ var TalkRoom = React.createClass(
                 },
                 dataType: 'json', 
                 cache: false,
-            })
+            }).done(function(data){this.setState({"message":data.message})}.bind(this))
         },
 
         render : function(){
@@ -42,6 +43,7 @@ var TalkRoom = React.createClass(
                 <div>
                     <h1>ひかりちゃんの部屋</h1>
                     <h2>エントランス</h2>
+                    <p>{this.state.message}</p>
                     <div>
                         <p>ログイン</p>
                         <form action="/api/hikari_login" method="POST">
