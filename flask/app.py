@@ -45,13 +45,11 @@ def login_room():
 
 @app.route("/talk_room")
 def talk_room():    
-    # return render_template("talkRoom.html")
-    content = render_template("talkRoom.html")
-    response = make_response(content) 
-    max_age = 60*60*24
-    expires = int(time.mktime(datetime.now().timetuple())) + max_age
-    response.set_cookie('keyName1', value="valueName1", max_age=max_age, expires=expires, path='/')
-    return response
+    # login が成功してるか，Cookie を取得して確認する
+    status = request.cookies.get('login', None)
+    if status is None:
+        return redirect("/login_room")
+    return render_template("talkRoom.html")
 
 @app.route("/react_study")
 @requires_auth

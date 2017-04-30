@@ -5,6 +5,8 @@ from flask import Flask, redirect, request, render_template, make_response
 import time
 from datetime import datetime
 
+from setting import HIKARI_SESSION_TIME
+
 def hikariLogin(form, hikariMain):
 
     # HIKARI の login を叩く
@@ -20,7 +22,7 @@ def hikariLogin(form, hikariMain):
         # Cookie を作成する
         content = redirect("/talk_room")
         response = make_response(content) 
-        max_age = 60
+        max_age = HIKARI_SESSION_TIME
         expires = int(time.mktime(datetime.now().timetuple())) + max_age
         response.set_cookie('login', value="success", max_age=max_age, expires=expires, path='/')
         return response
