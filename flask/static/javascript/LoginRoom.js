@@ -77,20 +77,6 @@ var TalkRoom = React.createClass(
                             </p>
                         </form>
                     </div>
-                    <div>
-                        <p>退会</p>
-                        <form action="/talk_room" method="GET">
-                            <p>
-                                ユーザーID:  <input type="text" name="client_id" onKeyPress={this.handleInput} size="100" />
-                            </p>
-                            <p>
-                                パスワード:    <input type="password" name="talk_id" onKeyPress={this.handleInput} size="100" />
-                            </p>
-                            <p>
-                                <input type="submit" value="OK" />
-                            </p>
-                        </form>
-                    </div>
                </div>
             );
         }
