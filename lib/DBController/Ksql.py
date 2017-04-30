@@ -130,12 +130,22 @@ class Ksql:
             return {}
         # where 句を追記していく
         if len(where) > 0:
+            count = 0
             sql = sql + u' where '
             for i in where:
-                sql = sql + i + "=" + where[i] + " "
+                count = count + 1
+                # 値が数値じゃない場合はリバースクォーテーションを付ける
+                if where[i].isdigit() == False:
+                    sql = sql + i + "='" + where[i] + "' "
+                else:
+                    sql = sql + i + "=" + where[i] + " "
+                if count < len(where):
+                    sql = sql + "and "
+                #
             #
         #
         # 実行
+        print(sql)
         cursor.execute(sql)
         # 取得したエントリーをほにゃほにゃする
         output = cursor.fetchall()
@@ -162,4 +172,7 @@ class Ksql:
 
 
 if __name__ == '__main__':
-    main()
+    k = Ksql()
+    k.select(u"user", where={u"user_name" : u"hikari", u"password" : "hikari"})    
+    
+
