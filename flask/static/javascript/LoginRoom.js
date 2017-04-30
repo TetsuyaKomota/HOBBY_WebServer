@@ -5,7 +5,7 @@ var TalkRoom = React.createClass(
                 talk_id     : "",
                 last_input  : 9999999999999,
                 delay       : 1000,
-                message     : "message"
+                cu_message     : ""
             };
         },
 
@@ -18,7 +18,7 @@ var TalkRoom = React.createClass(
         handleInput : function(e){
             var date = new Date();
             this.setState({last_input : date.getTime()});
-            setTimeout(this.checkValidation, this.state.delay, e.target);
+            setTimeout(this.checkValidation, this.state.delay, this.refs.cu_user_name);
         },
 
         checkValidation : function(target){
@@ -35,7 +35,7 @@ var TalkRoom = React.createClass(
                 },
                 dataType: 'json', 
                 cache: false,
-            }).done(function(data){this.setState({"message":data.message})}.bind(this))
+            }).done(function(data){this.setState({cu_message:data.message})}.bind(this))
         },
 
         render : function(){
@@ -43,15 +43,14 @@ var TalkRoom = React.createClass(
                 <div>
                     <h1>ひかりちゃんの部屋</h1>
                     <h2>エントランス</h2>
-                    <p>{this.state.message}</p>
                     <div>
                         <p>ログイン</p>
                         <form action="/api/hikari_login" method="POST">
                             <p>
-                                ユーザーID:  <input type="text" name="user_name" onKeyPress={this.handleInput} size="100" />
+                                ユーザーID:  <input type="text" name="user_name" size="100" />
                             </p>
                             <p>
-                                パスワード:    <input type="password" name="password" onKeyPress={this.handleInput} size="100" />
+                                パスワード:    <input type="password" name="password" size="100" />
                             </p>
                             <p>
                                 <input type="submit" value="OK" />
@@ -67,10 +66,11 @@ var TalkRoom = React.createClass(
                         <p>パスワードは空でも登録できます！</p>
                         <form action="/api/hikari_create_user" method="POST">
                             <p>
-                                ユーザーID:  <input type="text" name="user_name" onKeyPress={this.handleInput} size="100" />
+                                ユーザーID:  <input ref="cu_user_name" type="text" name="user_name" onChange={this.handleInput} size="100" />
+                                {this.state.cu_message}
                             </p>
                             <p>
-                                パスワード:    <input type="password" name="password" onKeyPress={this.handleInput} size="100" />
+                                パスワード:    <input type="password" name="password" size="100" />
                             </p>
                             <p>
                                 <input type="submit" value="OK" />
