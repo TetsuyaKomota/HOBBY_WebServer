@@ -152,14 +152,7 @@ class Hikari:
         return "あ，いらっしゃい．"
 
     def getReply(self, talk_id, query):
-        k = Ksql.Ksql()
-        if self.stateLib[self.stateIdx] == "normal":
-            res = k.select("quotation", where = {"key_id" : "6"})
-        else:
-            res = k.select("quotation", where = {"match_" + self.stateLib[self.stateIdx] : "1"})
-        
-        return res[0][1]
-        # return HikariReply.echo_current_time()
+        return HikariReply.talk(self.talk_log[talk_id], self.state, query)
 
     # 引数に入れた文字列を返すだけ．デバッグ用
     def talkEcho(self, query):
