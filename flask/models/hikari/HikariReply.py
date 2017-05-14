@@ -51,7 +51,8 @@ def old_getReply(talk_log, state, query):
 # ===============================================================
 
 # メインの talk 部分
-def talk(talk_log, state, query):
+def talk(talk_log, query):
+    state = talk_log[-1]["state"]
     bag = {}
     bag[echo_currentTime] = 1
     bag[echo_randomQuotation] = 1
@@ -64,9 +65,9 @@ def talk(talk_log, state, query):
         bag[echo_currentTime] = bag[echo_currentTime] + 10
    
     output = {}
-    rep = pick_random(bag, talk_log, state, query)
-    output["state"] = rep[0]
-    output["talk"] = rep[1]
+    reply = pick_random(bag, talk_log, state, query)
+    output["state"] = reply[0]
+    output["response"] = reply[1]
 
     return output
 

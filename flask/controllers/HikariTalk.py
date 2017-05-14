@@ -7,24 +7,16 @@ def hikariTalk(args, hikariMain):
 
     talk_id = args.get("talk_id", '')
     query = args.get("query", '')
-    # 感情状態の遷移を実行
-    hikariMain.stateChange(talk_id, query)
-    # 返答の取得
-    # response = hikariMain.getReply(talk_id, query)
-    # 感情状態の取得
-    # state = hikariMain.state
-   
-    rep = hikariMain.getReply(talk_id, query) 
-    state = rep["state"]
-    response = rep["talk"]
+    
+    # 返答と感情状態の取得
+    reply = hikariMain.getReply(talk_id, query) 
 
     # talk_log に登録
-    hikariMain.talk_log[talk_id].append({"state":state, "query":query, "response":response})
+    hikariMain.talk_log[talk_id].append({"state":reply["state"], "query":query, "response":reply["response"]})
 
     output = {}
     output['success'] = True
-    output['state'] = state
-    output['response'] = response.encode("utf-8")
+    output['state'] = reply["state"]
+    output['response'] = reply["response"].encode("utf-8")
+
     return json.dumps(output, indent=4, ensure_ascii=False)
-
-

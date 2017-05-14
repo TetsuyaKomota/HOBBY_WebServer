@@ -133,8 +133,6 @@ class Hikari:
 # state 関係メソッド
     # start_conversation 時に決定する最初の感情を生成する
     def stateFirst(self, query):
-        # self.state = "normal"
-        #return self.state
         return "normal"
 
 # =================================================================================================================
@@ -144,10 +142,8 @@ class Hikari:
         return "あ，いらっしゃい．"
 
     def getReply(self, talk_id, query):
-        rep = HikariReply.talk(self.talk_log[talk_id], self.talk_log[talk_id][-1]["state"], query)
-        # self.state = rep["state"]
-        # return rep["talk"]
-        return rep
+        reply = HikariReply.talk(self.talk_log[talk_id], query)
+        return reply
 
     # 引数に入れた文字列を返すだけ．デバッグ用
     def talkEcho(self, query):
