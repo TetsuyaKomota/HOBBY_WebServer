@@ -45,7 +45,7 @@ var BookInfo = React.createClass(
                     author : ''
                 });
                 let a = $.ajax({
-                    url: 'http://13.113.169.250:5000/api/book_info',
+                    url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/book_info',
                     Type: 'GET',
                     scriptCharset: 'UTF-8',
                     data: {'isbn' : e.target.value},
@@ -66,7 +66,7 @@ var BookInfo = React.createClass(
                         this.state.title != '' &&
                         this.state.author != '' 
                     ){
-                        this.insertToDB();
+                        // this.insertToDB();
                     }
                     else{
                         console.log("something wrong...");
