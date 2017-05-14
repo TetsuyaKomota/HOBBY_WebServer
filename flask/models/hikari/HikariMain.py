@@ -17,7 +17,7 @@ class Hikari:
 
     def __init__(self):
         self.user = USERNAME
-        self.state = "normal"
+        # self.state = "normal"
         self.talk_log = {}
         # 以下デバッグ
         self.stateIdx = 0
@@ -133,17 +133,9 @@ class Hikari:
 # state 関係メソッド
     # start_conversation 時に決定する最初の感情を生成する
     def stateFirst(self, query):
-        self.state = "normal"
-        return self.state
-
-    def stateChange(self, talk_id, query):
-        
-        # self.stateIdx = (self.stateIdx + 1) % len(self.stateLib)
-        self.stateIdx = int(random.random() * len(self.stateLib))
-
-        self.state = self.stateLib[self.stateIdx]
-
-        return self.state
+        # self.state = "normal"
+        #return self.state
+        return "normal"
 
 # =================================================================================================================
 # talk 関係メソッド
@@ -152,7 +144,10 @@ class Hikari:
         return "あ，いらっしゃい．"
 
     def getReply(self, talk_id, query):
-        return HikariReply.talk(self.talk_log[talk_id], self.state, query)
+        rep = HikariReply.talk(self.talk_log[talk_id], self.talk_log[talk_id][-1]["state"], query)
+        # self.state = rep["state"]
+        # return rep["talk"]
+        return rep
 
     # 引数に入れた文字列を返すだけ．デバッグ用
     def talkEcho(self, query):

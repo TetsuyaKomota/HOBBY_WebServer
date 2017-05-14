@@ -7,7 +7,7 @@ from random import random
 # ランダムに一つ選択して文字列を返す関数
     # bag   : dict. 選択肢を key, 比率を value にする
     # query : str.  bag から選択された要素が関数であるならこれを引数に実行した結果を返す．1引数限定
-def pick_random(bag, query):
+def pick_random(bag, talk_log, state, query):
     output = "illigal message"
     total = sum(bag.values())
     count = 0
@@ -22,7 +22,7 @@ def pick_random(bag, query):
     if type(output) == type("str"):
         return output
     else:
-        return output(query)
+        return output(talk_log, state, query)
 
 
 # デバッグ用．
