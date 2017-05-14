@@ -19,7 +19,7 @@ def pick_random(bag, talk_log, state, query):
             break
         #
     #
-    if type(output) == type("str"):
+    if type(output) == type("str") or type(output) == type(u"unicode"):
         return output
     else:
         return output(talk_log, state, query)
