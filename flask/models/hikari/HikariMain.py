@@ -7,7 +7,7 @@ from setting import HIKARI_USERNAME as USERNAME
 from setting import HIKARI_MAX_USER_NAME_LENGTH, HIKARI_VALID_CHAR_TYPE
 from lib.DBController import Ksql
 
-from hikari_models import HikariReply
+import HikariReply
 
 
 # ひかりちゃんAI クラス
