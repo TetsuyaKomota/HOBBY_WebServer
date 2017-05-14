@@ -129,17 +129,15 @@ class Hikari:
         else:
             userId = user[0][0]
         return [result, userId]
-# =================================================================================================================
-# state 関係メソッド
-    # start_conversation 時に決定する最初の感情を生成する
-    def stateFirst(self, query):
-        return "normal"
 
 # =================================================================================================================
 # talk 関係メソッド
    # start_conversation 時に返す最初の挨拶を生成する
     def talkFirst(self, query):
-        return "あ，いらっしゃい．"
+        reply = {}
+        reply["state"] = "normal"
+        reply["response"] = u"あ，いらっしゃい．"
+        return reply
 
     def getReply(self, talk_id, query):
         reply = HikariReply.talk(self.talk_log[talk_id], query)
@@ -148,6 +146,7 @@ class Hikari:
     # 引数に入れた文字列を返すだけ．デバッグ用
     def talkEcho(self, query):
         return query
+# =================================================================================================================
 
 if __name__ == "__main__":
     h = Hikari()

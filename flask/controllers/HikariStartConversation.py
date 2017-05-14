@@ -14,19 +14,18 @@ def hikariStartConversation(args, hikariMain):
     hikariMain.talk_log[newIdx] = []
 
     query = ""
-    # HIKARI の stateFirst() を叩いて最初の感情を取得する
-    initState = hikariMain.stateFirst(query)
-    # HIKARI の talkFirst() を叩いて最初の挨拶を取得する
-    response = hikariMain.talkFirst(query)
+
+    # 最初の挨拶と感情を取得する
+    reply = hikariMain.talkFirst(query)
+
     # 取得した最初の挨拶を talk_log に保持
-    hikariMain.talk_log[newIdx].append({"state":initState, "query":query, "response":response})
+    hikariMain.talk_log[newIdx].append({"state":reply["state"], "query":query, "response":reply["response"]})
 
     # return
     output = {}
     output['talk_id'] = newIdx
     output['num_of_talk'] = len(hikariMain.talk_log)
-    output['state'] = initState
-    output['response'] = response
+    output['state'] = reply["state"]
+    output['response'] = reply["response"].encode("utf-8")
+
     return json.dumps(output, indent=4, ensure_ascii=False)
-
-
