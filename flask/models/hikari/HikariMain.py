@@ -7,6 +7,7 @@ from setting import HIKARI_USERNAME as USERNAME
 from setting import HIKARI_MAX_USER_NAME_LENGTH, HIKARI_VALID_CHAR_TYPE
 from lib.DBController import Ksql
 
+import HikariTalkFirst
 import HikariReply
 
 
@@ -133,15 +134,11 @@ class Hikari:
 # =================================================================================================================
 # talk 関係メソッド
    # start_conversation 時に返す最初の挨拶を生成する
-    def talkFirst(self, query):
-        reply = {}
-        reply["state"] = "normal"
-        reply["response"] = u"あ，いらっしゃい．"
-        return reply
+    def talkFirst(self):
+        return HikariTalkFirst.talkFirst()
 
     def getReply(self, talk_id, query):
-        reply = HikariReply.talk(self.talk_log[talk_id], query)
-        return reply
+        return HikariReply.talk(self.talk_log[talk_id], query)
 
     # 引数に入れた文字列を返すだけ．デバッグ用
     def talkEcho(self, query):
