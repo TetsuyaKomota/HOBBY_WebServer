@@ -29,6 +29,10 @@ def echo_currentTime(inputs):
     # EC2 上ではなぜか9時間 遅れているようなので，調整
     return ["normal", ("今は " + str(now.month) + "月" + str(now.day) + "日 の " + str((now.hour + 9) % 24) + "時" + str(now.minute) + "分 だよ").decode("utf-8")]
 
+# 感謝されたときにする反応
+def echo_forThanks(inputs):
+    talk_log, state, query = inputs
+    return ["shy", u"お役に立てて良かった良かった！"]
 
 # 最初に適当に実装してたやつ
 def old_getReply(inputs):
@@ -57,6 +61,7 @@ def talk(talk_log, query):
     bag = {}
     bag[echo_currentTime] = 1
     bag[echo_randomQuotation] = 1
+    bag[echo_forThanks] = 1
     bag[old_getReply] = 10
 
     # 今の時刻を聞かれたら echo_currentTime を実行する    
@@ -64,6 +69,9 @@ def talk(talk_log, query):
         bag[echo_currentTime] = bag[echo_currentTime] + 100
     if re.search(u"(時間|じかん)", query):
         bag[echo_currentTime] = bag[echo_currentTime] + 10
+    # 感謝されたっぽかったら echo_Thanks を実行する
+    if re.search(u"(ありがとう|ありがとー|たすかる|たすかった|助かる|助かった)$", query):
+        bag[echo_forThanks] = bag[echo_forThanks] + 100
    
     output = {}
     reply = pick_random(bag, talk_log, state, query)
