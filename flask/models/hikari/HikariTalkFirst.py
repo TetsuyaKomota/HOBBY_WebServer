@@ -8,18 +8,15 @@ import re
 from lib.DBController import Ksql
 
 from HikariStatics import pick_random
+from HikariStatics import getStateLib
 
 
 k = Ksql.Ksql()
 
-def echo_quotation(a, b, c):
-    stateLib = []
-    stateLib.append("normal") 
-    stateLib.append("happy" )
-    stateLib.append("angly")
-    stateLib.append("doubt")
-    stateLib.append("shy")
-
+# pick_random にかける関係上，不要な引数を三つつける必要がある
+# TODO どうにかする
+def echo_quotation(inputs):
+    stateLib = getStateLib()
     bag = {}
     for q in k.select("quotation_talk_first"):
         bag[q[1]] = 1

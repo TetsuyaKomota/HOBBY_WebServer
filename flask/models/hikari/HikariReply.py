@@ -8,18 +8,19 @@ import re
 from lib.DBController import Ksql
 
 from HikariStatics import pick_random
-
+from HikariStatics import getStateLib
 
 k = Ksql.Ksql()
 
 # MySQL から定型句を取得する
 # 引数に表情を受け取り，ランダムに応答を返す
-def echo_randomQuotation(talk_log, state, query):
-    
+def echo_randomQuotation(inputs):
+    talk_log, state, query = inputs
     return [state, u"まだこれしか喋れないよ"]
 
 # 現在日時をお知らせする
-def echo_currentTime(talk_log, state, query):
+def echo_currentTime(inputs):
+    talk_log, state, query = inputs
 
     # 表情は normal に固定
     # TODO いたるところに state のリテラルをぶち込んでる状態やめたい
@@ -30,22 +31,22 @@ def echo_currentTime(talk_log, state, query):
 
 
 # 最初に適当に実装してたやつ
-def old_getReply(talk_log, state, query):
-        stateLib = []
-        stateLib.append("normal") 
-        stateLib.append("happy" )
-        stateLib.append("angly")
-        stateLib.append("doubt")
-        stateLib.append("shy")
+def old_getReply(inputs):
+        talk_log, state, query = inputs
 
-        state = stateLib[int(random() * len(stateLib))]
+        stateLib = getStateLib()
 
-        if state == "normal":
-            res = k.select("quotation", where = {"key_id" : "6"})
+        state = int(random() * (len(stateLib)-1)) + 1
+
+        '''
+        if state == 1 : #normal
+            res = k.select("quotation", where = {"state_key_id" : "1"})
         else:
             res = k.select("quotation", where = {"match_" + state : "1"})
+        '''
+        res = k.select("quotation", where = {"state_key_id" : str(state)})
         
-        return [state, res[0][1]]
+        return [stateLib[state], res[0][1]]
 
 
 # ===============================================================

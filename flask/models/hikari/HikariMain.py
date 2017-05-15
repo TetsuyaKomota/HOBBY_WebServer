@@ -10,6 +10,7 @@ from lib.DBController import Ksql
 import HikariTalkFirst
 import HikariReply
 
+from HikariStatics import getStateLib
 
 # ひかりちゃんAI クラス
 
@@ -22,12 +23,7 @@ class Hikari:
         self.talk_log = {}
         # 以下デバッグ
         self.stateIdx = 0
-        self.stateLib = []
-        self.stateLib.append("normal")
-        self.stateLib.append("happy")
-        self.stateLib.append("angly")
-        self.stateLib.append("doubt")
-        self.stateLib.append("shy")
+        self.stateLib = getStateLib()
 
 
     # ユーザー名のバリデーション処理

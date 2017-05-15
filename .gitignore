@@ -3,3 +3,5 @@
 setting.py
 nohup.out
 
+*.swp
+*.swo

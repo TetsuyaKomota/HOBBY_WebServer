@@ -4,6 +4,18 @@ from random import random
 
 # HIKARI の主に Talk 関係で使用する汎用メソッドを書いておくところ
 
+# state の dict を取得する
+def getStateLib():
+    stateLib = []
+    stateLib.append("invalid")
+    stateLib.append("normal") 
+    stateLib.append("happy" )
+    stateLib.append("angly")
+    stateLib.append("doubt")
+    stateLib.append("shy")
+    return stateLib
+
+'''
 # ランダムに一つ選択して文字列を返す関数
     # bag   : dict. 選択肢を key, 比率を value にする
     # query : str.  bag から選択された要素が関数であるならこれを引数に実行した結果を返す．1引数限定
@@ -23,6 +35,45 @@ def pick_random(bag, talk_log, state, query):
         return output
     else:
         return output(talk_log, state, query)
+'''
+
+# pick_random の改良案
+def pick_random(bag, *inputs):
+    output = "illigal message"
+    total = sum(bag.values())
+    count = 0
+    rand = total * random()
+    for p in bag:
+        output = p
+        count = count + bag[p]
+        if rand < count:
+            break
+        #
+    # 文字列の場合はそのまま出力する
+    if type(output) == type("str") or type(output) == type(u"unicode"):
+        return output
+    # 配列や辞書の場合は第一引数を代入して返す
+    elif type(output) == type({"dict":"dict"}) or type(output) == type(["list"]) or type(output) == type(set("set")):
+        return output[inputs[0]]
+    # 関数の場合は変数を入れて実行する
+    else:
+        return output(inputs)
+
+
+
+
+# quotation のエントリーを一つ加えると対応する state を返す
+def getQuotationState(entry):
+    stateLib = getStateLib()
+    temp = {}
+    temp[1] = entry[2]
+    temp[2] = entry[3]
+    temp[3] = entry[4]
+    temp[4] = entry[5]
+    if h==a and a==d and d==s:
+        return "normal"
+    else:
+        return stateLib[max(temp)]
 
 
 # デバッグ用．
