@@ -23,8 +23,13 @@ var TalkRoom = React.createClass(
 
         checkValidation : function(target){
 
-            console.log(this.hashing("hogehoge"));
-            
+            var hashed = this.hashing("hogehoge");
+            for(var i=0;i<10;i++){
+                hashed = this.laundering(hashed, "user", "hogehoge");
+            }
+            // console.log(this.hashing("hogehoge"));
+            console.log("hashed : " + hashed);
+
             var date = new Date()
             if(date.getTime() - this.state.last_input < this.state.delay){
                 return;
@@ -38,14 +43,24 @@ var TalkRoom = React.createClass(
                 },
                 dataType: 'json', 
                 cache: false,
-            }).done(function(data){this.setState({cu_message:data.message})}.bind(this))
+            }).done(function(data){
+                        this.setState({cu_message:data.message});
+                        if(data.status == true){
+                            this.refs.cu_submit.disabled = false;
+                            this.setState({cu_message:"OK!"});
+                        }
+                    }.bind(this))
         },
 
         hashing : function(plain){
-            jsSHA = require("jssha");
+            // jsSHA = require("jssha");
             var shaObj = new jsSHA("SHA-256", "TEXT", 1);
             shaObj.update(plain);
             return shaObj.getHash("HEX");
+        },
+
+        laundering : function(hashedpass, user_id, password){
+            return this.hashing(hashedpass + this.hashing(user_id) + this.hashing(this.hashing(user_id) + password));
         },
 
         render : function(){
@@ -83,7 +98,7 @@ var TalkRoom = React.createClass(
                                 パスワード:    <input type="password" name="password" size="100" />
                             </p>
                             <p>
-                                <input type="submit" value="OK" />
+                                <input ref="cu_submit" type="submit" value="OK" disabled={true}/>
                             </p>
                         </form>
                     </div>
