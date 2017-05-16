@@ -94,7 +94,13 @@ class Ksql:
         count = 0
         for c in values:
             count = count + 1
-            sql = sql + u"'" + values[c] + u"'"
+            if isinstance(values[c], str) or isinstance(values[c], unicode):
+                sql = sql + u"'" + values[c] + u"'"
+            elif isinstance(values[c], int) or isinstance(values[c], float):
+                sql = sql + u"'" + values[c] + u"'"
+            else:
+                print("DBController.Ksql.insert:ERROR! - invalid type of data:(" + c + "," + values[c] + ")")
+                exit()
             if count < len(values):
                 sql = sql + u","
             else:

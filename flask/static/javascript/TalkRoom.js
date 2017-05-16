@@ -89,7 +89,23 @@ var TalkRoom = React.createClass(
         },
         
         addLog : function(text) {
-            document.getElementById('holder').innerHTML = '<p>' + text + '</p>\n' + document.getElementById('holder').innerHTML;
+            document.getElementById('holder').innerHTML = '<p>' + this.escape_html(text) + '</p>\n' + document.getElementById('holder').innerHTML;
+        },
+
+        escape_html : function(string) {
+            if(typeof string !== 'string') {
+                return string;
+            }
+            return string.replace(/[&'`"<>]/g, function(match) {
+                return {
+                    '&': '&amp;',
+                    "'": '&#x27;',
+                    '`': '&#x60;',
+                    '"': '&quot;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                }[match]
+            });
         },
 
         render : function(){
