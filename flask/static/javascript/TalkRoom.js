@@ -81,7 +81,7 @@ var TalkRoom = React.createClass(
             }
             else if(e.key==="Enter"){
                 this.setState({lock_flg : true});
-                this.addLog("ひかり &gt; " + this.state.response);
+                this.addLog("ひかり > " + this.state.response);
                 this.addLog(this.refs.query.value);
                 this.talk();
                 this.refs.query.value = "";
