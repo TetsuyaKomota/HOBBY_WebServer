@@ -22,6 +22,9 @@ var TalkRoom = React.createClass(
         },
 
         checkValidation : function(target){
+
+            console.log(this.hashing("hogehoge"));
+            
             var date = new Date()
             if(date.getTime() - this.state.last_input < this.state.delay){
                 return;
@@ -36,6 +39,13 @@ var TalkRoom = React.createClass(
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){this.setState({cu_message:data.message})}.bind(this))
+        },
+
+        hashing : function(plain){
+            jsSHA = require("jssha");
+            var shaObj = new jsSHA("SHA-256", "TEXT", 1);
+            shaObj.update(plain);
+            return shaObj.getHash("HEX");
         },
 
         render : function(){
