@@ -130,7 +130,7 @@ var TalkRoom = React.createClass(
                     <h1>ひかりちゃんの部屋</h1>
                     <h2>エントランス</h2>
                     <div>
-                        <p>ログイン</p>
+                        <h3>ログイン</h3>
                             <p>
                                 ユーザーID:  <input ref="login_user_name" type="text" size="100" />
                                 {this.state.login_message}
@@ -143,12 +143,10 @@ var TalkRoom = React.createClass(
                             </p>
                     </div>
                     <div>
-                        <p>新規登録</p>
-                        <p>注意！！</p>
-                        <p>現在パスワードは超気休めです！わかりやすく言うとPOST データ見れば簡単に覗けます！</p>
-                        <p>ハッシュ化すらしてません！生のままです！パスワードとは？</p>
-                        <p>「いつも使ってるパスワード」とかの入力は絶対にやめてください！</p>
-                        <p>パスワードは空でも登録できます！</p>
+                        <h3>新規登録</h3>
+                        <p>万全を期してはいますが，セキュリティ知識一週間弱の人間の万全なので，</p>
+                        <p>「いつも使ってるパスワード」の登録はやめてください</p>
+                        <p>パスワードは空でも登録できます</p>
                         <p>
                             ユーザーID:  <input ref="cu_user_name" type="text" onChange={this.handleInput} size="100" />
                             {this.state.cu_message}
