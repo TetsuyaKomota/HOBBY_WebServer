@@ -51,7 +51,7 @@ class Ksql:
             elif isinstance(values[c], str):
                 sql = sql + u"'" + values[c].decode("utf-8") + u"'"
             elif isinstance(values[c], int) or isinstance(values[c], float):
-                sql = sql + u"'" + values[c] + u"'"
+                sql = sql + u"'" + str(values[c]) + u"'"
             else:
                 print("DBController.Ksql.insert:ERROR! - invalid type of data:(" + c + "," + values[c] + ")")
                 return None
