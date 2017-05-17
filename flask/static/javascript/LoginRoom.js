@@ -2,11 +2,13 @@ var TalkRoom = React.createClass(
     {
         getInitialState : function(){
             return {
-                talk_id       : "",
-                last_input    : 9999999999999,
-                delay         : 1000,
-                login_message : "",
-                cu_message    : ""
+                talk_id        : "",
+                last_input     : 9999999999999,
+                delay          : 1000,
+                login_message  : "",
+                cu_message     : "",
+                login_disabled : false,
+                cu_disabled    : true
             };
         },
 
@@ -29,16 +31,19 @@ var TalkRoom = React.createClass(
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){
-                    this.setState({login_message:data.message});
-                    if(data.result == true){
-                        window.location.href = "/talk_room";
-                    }
-                }.bind(this))
+                        this.refs.login_password.value = "";
+                        if(data.result == true){
+                            window.location.href = "/talk_room";
+                        }
+                        else{
+                            this.setState({login_message:data.message});
+                        }
+                    }.bind(this))
         },
 
 
         handleCreateUser : function(e){
-            this.refs.cu_submit.disabled = true;
+            this.setState({cu_disabled : true});
             var hashedPass = this.laundering(this.refs.cu_user_name.value, this.refs.cu_password.value);
             $.ajax({
                 url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_create_user',
@@ -53,9 +58,11 @@ var TalkRoom = React.createClass(
             }).done(function(data){
                         this.refs.cu_user_name.value = "";
                         this.refs.cu_password.value = "";
-                        this.setState({cu_message:data.message});
                         if(data.result == true){
                             this.setState({cu_message:"Successfully created new user! Please Login!"});
+                        }
+                        else{
+                            this.setState({cu_message:data.message});
                         }
                     }.bind(this))
         },
@@ -67,7 +74,7 @@ var TalkRoom = React.createClass(
         },
 
         checkValidation : function(target){
-            this.refs.cu_submit.disabled = true;
+            this.setState({cu_disabled : true});
             var date = new Date()
             if(date.getTime() - this.state.last_input < this.state.delay){
                 return;
@@ -84,7 +91,7 @@ var TalkRoom = React.createClass(
             }).done(function(data){
                         this.setState({cu_message:data.message});
                         if(data.status == true){
-                            this.refs.cu_submit.disabled = false;
+                            this.setState({cu_disabled : false});
                             this.setState({cu_message:"OK!"});
                         }
                     }.bind(this))
@@ -132,7 +139,7 @@ var TalkRoom = React.createClass(
                                 パスワード:    <input ref="login_password" type="password" size="100" />
                             </p>
                             <p>
-                                <input type="button" ref="login_submit" value="ログイン" onClick={this.handleLogin}/>
+                                <input type="button" value="ログイン" onClick={this.handleLogin} disabled={this.state.login_disabled}/>
                             </p>
                     </div>
                     <div>
@@ -150,7 +157,7 @@ var TalkRoom = React.createClass(
                             パスワード:    <input ref="cu_password" type="password" size="100" />
                         </p>
                         <p>
-                            <input type="button" ref="cu_submit" value="新規登録" onClick={this.handleCreateUser}/>
+                            <input type="button" value="新規登録" onClick={this.handleCreateUser} disabled={this.state.cu_disabled}/>
                         </p>
                     </div>
                </div>
