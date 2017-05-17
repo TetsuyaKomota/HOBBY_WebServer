@@ -2,6 +2,9 @@
 
 from random import random
 
+from lib.DBController import Ksql
+
+k = Ksql.Ksql()
 # HIKARI の主に Talk 関係で使用する汎用メソッドを書いておくところ
 
 # state の dict を取得する
@@ -15,29 +18,9 @@ def getStateLib():
     stateLib.append("shy")
     return stateLib
 
-'''
 # ランダムに一つ選択して文字列を返す関数
     # bag   : dict. 選択肢を key, 比率を value にする
     # query : str.  bag から選択された要素が関数であるならこれを引数に実行した結果を返す．1引数限定
-def pick_random(bag, talk_log, state, query):
-    output = "illigal message"
-    total = sum(bag.values())
-    count = 0
-    rand = total * random()
-    for p in bag:
-        output = p
-        count = count + bag[p]
-        if rand < count:
-            break
-        #
-    #
-    if type(output) == type("str") or type(output) == type(u"unicode"):
-        return output
-    else:
-        return output(talk_log, state, query)
-'''
-
-# pick_random の改良案
 def pick_random(bag, *inputs):
     output = "illigal message"
     total = sum(bag.values())
@@ -59,9 +42,6 @@ def pick_random(bag, *inputs):
     else:
         return output(inputs)
 
-
-
-
 # quotation のエントリーを一つ加えると対応する state を返す
 def getQuotationState(entry):
     stateLib = getStateLib()
@@ -75,8 +55,26 @@ def getQuotationState(entry):
     else:
         return stateLib[max(temp)]
 
+# quotation 系のテーブル名を指定するとランダムで一件取得する
+def echoRandomQuotation(tableName):
+        # テーブル名は quotation 始まり限定
+        if tableName.split("_")[0] != u"quotation":
+            return None
+        else:
+            def func(inputs):
+                talk_log, state, query = inputs
+                stateLib = getStateLib()        
+                res = k.selectRandom(tableName)
+                return [stateLib[res[2]], res[1]]
+            return func
+
 
 # デバッグ用．
+if __name__ == "__main__":
+    f = echoRandomQuotation("quotation_talk_first") 
+    res = f(({}, 0, u"ほげほげ"))
+    for c in res:
+        print(c)
 '''
 def addPrefix(query):
     return("これは"+query)

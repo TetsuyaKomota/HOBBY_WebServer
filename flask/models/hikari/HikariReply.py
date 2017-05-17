@@ -9,6 +9,7 @@ from lib.DBController import Ksql
 
 from HikariStatics import pick_random
 from HikariStatics import getStateLib
+from HikariStatics import echoRandomQuotation
 
 k = Ksql.Ksql()
 
@@ -37,20 +38,11 @@ def echo_forThanks(inputs):
 # 最初に適当に実装してたやつ
 def old_getReply(inputs):
         talk_log, state, query = inputs
-
         stateLib = getStateLib()
-
-        state = int(random() * (len(stateLib)-1)) + 1
-
-        '''
-        if state == 1 : #normal
-            res = k.select("quotation", where = {"state_key_id" : "1"})
-        else:
-            res = k.select("quotation", where = {"match_" + state : "1"})
-        '''
-        res = k.select("quotation", where = {"state_key_id" : str(state)})
         
-        return [stateLib[state], res[0][1]]
+        res = k.selectRandom(u"quotation")
+        
+        return [stateLib[res[2]], res[1]]
 
 
 # ===============================================================
@@ -62,7 +54,7 @@ def talk(talk_log, query):
     bag[echo_currentTime] = 1
     bag[echo_randomQuotation] = 1
     bag[echo_forThanks] = 1
-    bag[old_getReply] = 10
+    bag[echoRandomQuotation(u"quotation")] = 10
 
     # 今の時刻を聞かれたら echo_currentTime を実行する    
     if re.search(u"(今|いま)", query) and re.search(u"(何時？)", query):
