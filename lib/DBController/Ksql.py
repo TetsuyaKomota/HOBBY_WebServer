@@ -128,7 +128,7 @@ class Ksql:
         # 実行
         cursor.execute(sql)
         # 取得したエントリーをほにゃほにゃする
-        output = cursor.fetchall()
+        output = cursor.fetchall()[0]
         self.conn.commit()
         cursor.close()
 
@@ -201,6 +201,6 @@ if __name__ == '__main__':
     k = Ksql()
     # k.select(u"user", where={u"user_name" : u"hikari", u"password" : "hikari"})    
     res = k.selectRandom(u"quotation")
-    for entry in res:
-        for c in entry:
-            print(c)
+    for i, c in enumerate(res):
+        print(str(i) + ":")
+        print(c)
