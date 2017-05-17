@@ -39,7 +39,6 @@ def admin():
     return render_template("admin.html")
 
 @app.route("/login_room")
-@requires_auth
 def login_room():
     return render_template("loginRoom.html")
 
