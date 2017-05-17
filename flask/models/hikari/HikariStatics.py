@@ -8,6 +8,7 @@ k = Ksql.Ksql()
 # HIKARI の主に Talk 関係で使用する汎用メソッドを書いておくところ
 
 # state の dict を取得する
+# TODO いつか消す
 def getStateLib():
     stateLib = []
     stateLib.append("invalid")
@@ -17,6 +18,24 @@ def getStateLib():
     stateLib.append("doubt")
     stateLib.append("shy")
     return stateLib
+
+# state 名から state_key_id を返す
+# TODO いつか消す
+def getStateKeyId(state):
+   if state == u"normal":
+        return 1
+
+   if state == u"happy":
+        return 2
+
+   if state == u"angly":
+        return 3
+
+   if state == u"doubt":
+        return 4
+
+   if state == u"shy":
+        return 5
 
 # ランダムに一つ選択して文字列を返す関数
     # bag   : dict. 選択肢を key, 比率を value にする

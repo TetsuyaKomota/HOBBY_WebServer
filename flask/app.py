@@ -102,7 +102,7 @@ def Api_HikariStartConversation():
         # 対話を取得
 @app.route("/api/hikari_talk", methods=["GET"])
 def Api_HikariTalk():
-    return hikariTalk(request.args, hikari)
+    return hikariTalk(request, hikari)
         # エージェント削除
 @app.route("/api/hikari_end_conversation", methods=["GET"])
 def Api_HikariEndConversation():
