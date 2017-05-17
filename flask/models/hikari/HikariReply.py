@@ -37,6 +37,7 @@ def talk(talk_log, query):
     quotation = 10
     curtime = 1
     forthanks = 1
+    warningxss = 0
 
     # 今の時刻を聞かれたら echo_currentTime を実行する    
     if re.search(u"(今|いま)", query) and re.search(u"(何時？)", query):
@@ -46,11 +47,15 @@ def talk(talk_log, query):
     # 感謝されたっぽかったら echo_Thanks を実行する
     if re.search(u"(ありがとう|ありがとー|たすかる|たすかった|助かる|助かった)$", query):
         forthanks = forthanks + 100
+    # <script> タグを発見したら warningXSS を実行する 
+    if re.search(u"<script", query):
+        warningxss = warningxss + 1000000
  
     state = talk_log[-1]["state"]
     bag = {}
     bag[echo_currentTime] = curtime
     bag[echoRandomQuotation(u"quotation_for_thanks")] = forthanks
+    bag[echoRandomQuotation(u"quotation_warning_xss")] = warningxss
     bag[echoRandomQuotation(u"quotation")] = quotation
 
   
