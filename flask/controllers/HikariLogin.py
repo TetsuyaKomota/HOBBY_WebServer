@@ -7,10 +7,10 @@ from datetime import datetime
 
 from setting import HIKARI_SESSION_TIME
 
-def hikariLogin(form, hikariMain):
+def hikariLogin(request, hikariMain):
 
     # HIKARI の login を叩く
-    status = hikariMain.login(form["user_name"], form["password"])
+    status = hikariMain.login(request.form["user_name"], request.form["password"])
 
     # ログイン失敗ならその旨を JSON で返して終了
     output = {}

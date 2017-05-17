@@ -84,21 +84,21 @@ def Api_BookInsert():
         # ユーザー名のバリデーションチェック
 @app.route("/api/hikari_user_validation", methods=["POST"])
 def Api_HikariUserValidation():
-    return hikariUserValidation(request.form, hikari)
+    return hikariUserValidation(request, hikari)
         # 新規登録
 @app.route("/api/hikari_create_user", methods=["POST"])
 def Api_HikariCreateUser():
-    return hikariCreateUser(request.form, hikari)
+    return hikariCreateUser(request, hikari)
         #ログイン 
 @app.route("/api/hikari_login", methods=["POST"])
 def Api_HikariLogin():
-    return hikariLogin(request.form, hikari)
+    return hikariLogin(request, hikari)
 # ------------------------------------------------------
     # メイン画面用 API
         # エージェント生成
 @app.route("/api/hikari_start_conversation", methods=["GET"])
 def Api_HikariStartConversation():
-    return hikariStartConversation(request.args, hikari)
+    return hikariStartConversation(request, hikari)
         # 対話を取得
 @app.route("/api/hikari_talk", methods=["GET"])
 def Api_HikariTalk():
@@ -106,7 +106,7 @@ def Api_HikariTalk():
         # エージェント削除
 @app.route("/api/hikari_end_conversation", methods=["GET"])
 def Api_HikariEndConversation():
-    return hikariEndConversation(request.args, hikari)
+    return hikariEndConversation(request, hikari)
  
 
 

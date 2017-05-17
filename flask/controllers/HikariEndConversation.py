@@ -2,10 +2,10 @@
 
 import json
 
-def hikariEndConversation(args, hikariMain):
+def hikariEndConversation(request, hikariMain):
 
 
-    del hikariMain.talk_log[args.get("talk_id", '')]
+    del hikariMain.talk_log[request.args.get("talk_id", '')]
 
     output = {}
     output['success'] = True

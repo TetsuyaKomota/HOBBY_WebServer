@@ -2,7 +2,7 @@
 
 import json
 
-def hikariStartConversation(args, hikariMain):
+def hikariStartConversation(request, hikariMain):
 
     # HIKARI の talk_log にエントリーを追加する
 

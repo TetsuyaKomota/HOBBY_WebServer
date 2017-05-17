@@ -2,10 +2,10 @@
 
 import json
 
-def hikariUserValidation(form, hikariMain):
+def hikariUserValidation(request, hikariMain):
 
     # HIKARI の isValidUserName を叩く
-    status = hikariMain.isValidUserName(form["user_name"])
+    status = hikariMain.isValidUserName(request.form["user_name"])
 
     # return
     output = {}
