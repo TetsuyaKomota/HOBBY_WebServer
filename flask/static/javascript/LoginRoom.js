@@ -15,7 +15,7 @@ var TalkRoom = React.createClass(
         componentWillUnmount : function(){
         },
 
-        handleCreateUser : function(){
+        handleCreateUser : function(e){
             this.refs.cu_submit.disabled = true;
             var hashedPass = this.hashing(this.refs.cu_password);
             for(var i=0;i<1000;i++){
@@ -26,17 +26,17 @@ var TalkRoom = React.createClass(
                 type: 'POST',
                 scriptCharset: 'UTF-8',
                 data: {
-                    'user_name' : this.refs.cu_user_name,
+                    'user_name' : this.refs.cu_user_name.value,
                     'password'  : hashedPass
                 },
                 dataType: 'json', 
                 cache: false,
             }).done(function(data){
-                        this.refs.cu_user_name = "";
-                        this.refs.cu_password = "";
+                        this.refs.cu_user_name.value = "";
+                        this.refs.cu_password.value = "";
                         this.setState({cu_message:data.message});
-                        if(data.status == true){
-                            this.setState({cu_message:"successfully created new user!<br>Please Login!"});
+                        if(data.result == true){
+                            this.setState({cu_message:"Successfully created new user! Please Login!"});
                         }
                     }.bind(this))
         },
@@ -49,9 +49,9 @@ var TalkRoom = React.createClass(
 
         checkValidation : function(target){
             this.refs.cu_submit.disabled = true;
-            var hashed = this.hashing("hogehoge");
+            var hashed = this.hashing(0);
             for(var i=0;i<10;i++){
-                hashed = this.laundering(hashed, "user", "hogehoge");
+                hashed = this.laundering(hashed, "user", 0);
             }
             // console.log(this.hashing("hogehoge"));
             console.log("hashed : " + hashed);
@@ -115,18 +115,16 @@ var TalkRoom = React.createClass(
                         <p>ハッシュ化すらしてません！生のままです！パスワードとは？</p>
                         <p>「いつも使ってるパスワード」とかの入力は絶対にやめてください！</p>
                         <p>パスワードは空でも登録できます！</p>
-                        <form onSubmit={this.handleCreateUser}>
-                            <p>
-                                ユーザーID:  <input ref="cu_user_name" type="text" name="user_name" onChange={this.handleInput} size="100" />
-                                {this.state.cu_message}
-                            </p>
-                            <p>
-                                パスワード:    <input ref="cu_password" type="password" name="password" size="100" />
-                            </p>
-                            <p>
-                                <input ref="cu_submit" type="submit" value="OK" disabled={true}/>
-                            </p>
-                        </form>
+                        <p>
+                            ユーザーID:  <input ref="cu_user_name" type="text" onChange={this.handleInput} size="100" />
+                            {this.state.cu_message}
+                        </p>
+                        <p>
+                            パスワード:    <input ref="cu_password" type="password" size="100" />
+                        </p>
+                        <p>
+                            <input type="button" ref="cu_submit" value="新規登録" onClick={this.handleCreateUser}/>
+                        </p>
                     </div>
                </div>
             );
