@@ -9,28 +9,16 @@ from lib.DBController import Ksql
 
 from HikariStatics import pick_random
 from HikariStatics import getStateLib
-
+from HikariStatics import echoRandomQuotation
 
 k = Ksql.Ksql()
-
-# pick_random にかける関係上，不要な引数を三つつける必要がある
-# TODO どうにかする
-def echo_quotation(inputs):
-    stateLib = getStateLib()
-    bag = {}
-    for q in k.select("quotation_talk_first"):
-        bag[q[1]] = 1
-    output = {}
-    reply = pick_random(bag, None, None, None)
-    return ["normal", reply]
-
 
 # =========================================================
 # メインの talkFirst 部分
 def talkFirst():
     bag = {}
     # 定型句の挨拶
-    bag[echo_quotation] = 1
+    bag[echoRandomQuotation(u"quotation_talk_first")] = 1
 
     output = {}
     reply = pick_random(bag, None, None, None)
@@ -40,8 +28,6 @@ def talkFirst():
     return output
 
 # =========================================================
-
-
 
 if __name__ == "__main__":
     print(echo_quotation())
