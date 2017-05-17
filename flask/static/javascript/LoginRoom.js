@@ -15,6 +15,32 @@ var TalkRoom = React.createClass(
         componentWillUnmount : function(){
         },
 
+        handleCreateUser : function(){
+            this.refs.cu_submit.disabled = true;
+            var hashedPass = this.hashing(this.refs.cu_password);
+            for(var i=0;i<1000;i++){
+                hashedPass = this.laundering(hashedPass, this.refs.cu_user_name, this.refs.cu_password);
+            }
+            $.ajax({
+                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_create_user',
+                type: 'POST',
+                scriptCharset: 'UTF-8',
+                data: {
+                    'user_name' : this.refs.cu_user_name,
+                    'password'  : hashedPass
+                },
+                dataType: 'json', 
+                cache: false,
+            }).done(function(data){
+                        this.refs.cu_user_name = "";
+                        this.refs.cu_password = "";
+                        this.setState({cu_message:data.message});
+                        if(data.status == true){
+                            this.setState({cu_message:"successfully created new user!<br>Please Login!"});
+                        }
+                    }.bind(this))
+        },
+
         handleInput : function(e){
             var date = new Date();
             this.setState({last_input : date.getTime()});
@@ -22,7 +48,7 @@ var TalkRoom = React.createClass(
         },
 
         checkValidation : function(target){
-
+            this.refs.cu_submit.disabled = true;
             var hashed = this.hashing("hogehoge");
             for(var i=0;i<10;i++){
                 hashed = this.laundering(hashed, "user", "hogehoge");
@@ -89,13 +115,13 @@ var TalkRoom = React.createClass(
                         <p>ハッシュ化すらしてません！生のままです！パスワードとは？</p>
                         <p>「いつも使ってるパスワード」とかの入力は絶対にやめてください！</p>
                         <p>パスワードは空でも登録できます！</p>
-                        <form action="/api/hikari_create_user" method="POST">
+                        <form onSubmit={this.handleCreateUser}>
                             <p>
                                 ユーザーID:  <input ref="cu_user_name" type="text" name="user_name" onChange={this.handleInput} size="100" />
                                 {this.state.cu_message}
                             </p>
                             <p>
-                                パスワード:    <input type="password" name="password" size="100" />
+                                パスワード:    <input ref="cu_password" type="password" name="password" size="100" />
                             </p>
                             <p>
                                 <input ref="cu_submit" type="submit" value="OK" disabled={true}/>
