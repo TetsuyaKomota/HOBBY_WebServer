@@ -4,6 +4,7 @@ setting.py
 nohup.out
 node_modules/
 cron_batch/requests-oauthlib/
+cron_batch/log.txt
 
 *.swp
 *.swo
