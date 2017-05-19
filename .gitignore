@@ -3,6 +3,7 @@
 setting.py
 nohup.out
 node_modules/
+cron_batch/requests-oauthlib/
 
 *.swp
 *.swo
