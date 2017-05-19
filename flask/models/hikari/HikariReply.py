@@ -11,7 +11,6 @@ from HikariStatics import pick_random
 from HikariStatics import getStateLib
 from HikariStatics import echoRandomQuotation
 
-k = Ksql.Ksql()
 
 # 現在日時をお知らせする
 def echo_currentTime(inputs):

@@ -4,7 +4,6 @@ from random import random
 
 from lib.DBController import Ksql
 
-k = Ksql.Ksql()
 # HIKARI の主に Talk 関係で使用する汎用メソッドを書いておくところ
 
 # state の dict を取得する
@@ -76,6 +75,7 @@ def getQuotationState(entry):
 
 # quotation 系のテーブル名を指定するとランダムで一件取得する
 def echoRandomQuotation(tableName):
+        k = Ksql.Ksql()
         # テーブル名は quotation 始まり限定
         if tableName.split("_")[0] != u"quotation":
             return None

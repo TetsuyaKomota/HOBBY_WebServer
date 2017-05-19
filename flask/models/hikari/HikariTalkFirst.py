@@ -11,11 +11,11 @@ from HikariStatics import pick_random
 from HikariStatics import getStateLib
 from HikariStatics import echoRandomQuotation
 
-k = Ksql.Ksql()
 
 # =========================================================
 # メインの talkFirst 部分
 def talkFirst():
+    k = Ksql.Ksql()
     bag = {}
     # 定型句の挨拶
     bag[echoRandomQuotation(u"quotation_talk_first")] = 1
