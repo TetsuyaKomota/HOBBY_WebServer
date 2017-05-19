@@ -1,11 +1,18 @@
 #-*- coding: utf-8 -*-
 from datetime import datetime
 from requests_oauthlib import OAuth1Session
+from random import random 
 
 from setting import HT_API_KEY
 from setting import HT_API_SECRET
 from setting import HT_ACCESS_KEY
 from setting import HT_ACCESS_SECRET
+
+# 適当な確率でツイートする
+r = random()
+if r < 0.6:
+    print("ignored")
+    exit()
 
 CK = HT_API_KEY         # Consumer Key
 CS = HT_API_SECRET      # Consumer Secret
