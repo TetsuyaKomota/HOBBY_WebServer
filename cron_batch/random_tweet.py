@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 from datetime import datetime
+from datetime import timedelta
 from requests_oauthlib import OAuth1Session
 from random import random 
 
@@ -23,10 +24,12 @@ AS = HT_ACCESS_SECRET   # Accesss Token Secert
 url = "https://api.twitter.com/1.1/statuses/update.json"
 
 # ツイート本文
-now = datetime.now()
-if ((now.hour + 9) % 24) < 4 or ((now.hour + 9) % 24) > 18:
+now = datetime.now() + timedelta(hours=9)
+if now.hour < 4 or now.hour > 18:
+# if ((now.hour + 9) % 24) < 4 or ((now.hour + 9) % 24) > 18:
     reference = "こんばんは. "
-elif ((now.hour + 9) % 24) < 11:
+elif now.hour < 11:
+# elif ((now.hour + 9) % 24) < 11:
     reference = "おはよー. "
 else:
     reference = "こんにちは. "
@@ -34,7 +37,9 @@ else:
 reference = reference + "今は "
 reference = reference + str(now.month) + "月 "
 reference = reference + str(now.day) + "日の "
-reference = reference + str((now.hour + 9) % 24) + "時 "
+#reference = reference + str((now.hour + 9) / 24 + now.day) + "日の "
+reference = reference + str(now.hour) + "時 "
+#reference = reference + str((now.hour + 9) % 24) + "時 "
 reference = reference + str(now.minute) + "分 "
 reference = reference + "だよ"
 

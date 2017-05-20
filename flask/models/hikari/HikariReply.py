@@ -2,6 +2,7 @@
 # 定型句などを生成するメソッドを定義するファイル
 
 from datetime import datetime
+from datetime import timedelta
 from random import random
 import re
 
@@ -19,12 +20,12 @@ def echo_currentTime(inputs):
     # 表情は normal に固定
     # TODO いたるところに state のリテラルをぶち込んでる状態やめたい
 
-    now = datetime.now()
     # EC2 上ではなぜか9時間 遅れているようなので，調整
+    now = datetime.now() + timedelta(hours=9)
     reference = "今は "
     reference = reference + str(now.month) + "月 "
     reference = reference + str(now.day) + "日の "
-    reference = reference + str((now.hour + 9) % 24) + "時 "
+    reference = reference + str(now.hour) + "時 "
     reference = reference + str(now.minute) + "分 "
     reference = reference + "だよ"
 
