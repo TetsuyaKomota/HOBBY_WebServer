@@ -6,5 +6,7 @@ node_modules/
 cron_batch/requests-oauthlib/
 cron_batch/log.txt
 
+*.model
+
 *.swp
 *.swo

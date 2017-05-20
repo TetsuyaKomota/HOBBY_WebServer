@@ -99,6 +99,9 @@ def talk(talk_log, query):
         quotationsothen = quotationsothen + 100
     if re.search(u"(こと|事)", query):
         quotationsothen = quotationsothen + 10
+    # 直前に「～って何？」って聞いてたら相槌の確率を上げる
+    if re.search(u"(って何)", talk_log[-1]["response"]):
+        quotationsothen = quotationsothen + 20
     # <script> タグを発見したら warningXSS を実行する 
     if re.search(u"<script", query):
         warningxss = warningxss + 1000000
