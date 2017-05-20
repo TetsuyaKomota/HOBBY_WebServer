@@ -59,18 +59,18 @@ def ques_noun(inputs):
 # ===============================================================
 
 # クエリ内に指定した品詞の単語が存在するか判定する
-def hasWordofthisPOS(query, POS):
+def hasWordofthisPOS(query, POS, unknown=False):
     m = MeCab()
     words = m.parse(query.encode("utf-8")).split("\n")
     for w in words:
         if len(w.split(",")) < 2:
             break
         if w.split(",")[0].split("\t")[1] == POS:
-            return True
+            if unknown != True or w.split(",")[6] == "*":
+                return True
         #
     #
     return False
-
   
 # ===============================================================
 
@@ -91,9 +91,9 @@ def talk(talk_log, query):
     # 感謝されたっぽかったら echo_Thanks を実行する
     if re.search(u"(ありがとう|ありがとー|たすかる|たすかった|助かる|助かった)$", query):
         forthanks = forthanks + 100
-    # 名詞を見かけたら ques_noun を実行する 
-    if hasWordofthisPOS(query, "名詞"):
-        quesnoun = quesnoun + 20
+    # 知らない名詞を見かけたら ques_noun を実行する 
+    if hasWordofthisPOS(query, "名詞", unknown=True):
+        quesnoun = quesnoun + 200
     # 何か教えてくれたっぽかったら so_then から乱択する
     if re.search(u"(だよ|それは|事|こと)", query):
         quotationsothen = quotationsothen + 1000
