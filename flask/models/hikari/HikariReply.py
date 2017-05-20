@@ -95,8 +95,10 @@ def talk(talk_log, query):
     if hasWordofthisPOS(query, "名詞", unknown=True):
         quesnoun = quesnoun + 200
     # 何か教えてくれたっぽかったら so_then から乱択する
-    if re.search(u"(だよ|それは|事|こと)", query):
-        quotationsothen = quotationsothen + 1000
+    if re.search(u"(だよ|それは|らしい)", query):
+        quotationsothen = quotationsothen + 100
+    if re.search(u"(こと|事)", query):
+        quotationsothen = quotationsothen + 10
     # <script> タグを発見したら warningXSS を実行する 
     if re.search(u"<script", query):
         warningxss = warningxss + 1000000
