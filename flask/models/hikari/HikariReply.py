@@ -44,7 +44,8 @@ def ques_noun(inputs):
         n = w.split(",")
         if len(n) < 2:
             break
-        elif n[0].split("\t")[1] == "名詞" and n[1] != "非自立":
+        # elif n[0].split("\t")[1] == "名詞" and n[1] != "非自立":
+        elif n[0].split("\t")[1] == "名詞" and n[6] == "*":
             if n[0].split("\t")[0] in bag.keys():
                 bag[n[0].split("\t")[0]] = bag[n[0].split("\t")[0]] + 1
             else:
@@ -76,6 +77,7 @@ def hasWordofthisPOS(query, POS):
 # メインの talk 部分
 def talk(talk_log, query):
     quotation = 10
+    quotationsothen = 1
     curtime = 1
     forthanks = 1
     quesnoun = 0
@@ -91,7 +93,10 @@ def talk(talk_log, query):
         forthanks = forthanks + 100
     # 名詞を見かけたら ques_noun を実行する 
     if hasWordofthisPOS(query, "名詞"):
-        quesnoun = quesnoun + 5
+        quesnoun = quesnoun + 20
+    # 何か教えてくれたっぽかったら so_then から乱択する
+    if re.search(u"(だよ|それは|事|こと)", query):
+        quotationsothen = quotationsothen + 1000
     # <script> タグを発見したら warningXSS を実行する 
     if re.search(u"<script", query):
         warningxss = warningxss + 1000000
@@ -103,6 +108,7 @@ def talk(talk_log, query):
     bag[echoRandomQuotation(u"quotation_for_thanks")] = forthanks
     bag[echoRandomQuotation(u"quotation_warning_xss")] = warningxss
     bag[echoRandomQuotation(u"quotation")] = quotation
+    bag[echoRandomQuotation(u"quotation_so_then")] = quotationsothen
 
   
     output = {}
