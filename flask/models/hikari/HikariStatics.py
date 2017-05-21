@@ -3,6 +3,7 @@ import requests
 import urllib
 import dill
 import re
+import unicodedata
 from random import random
 from natto import MeCab
 from datetime import datetime
@@ -11,6 +12,7 @@ from datetime import timedelta
 from lib.DBController import Ksql
 from setting import CSE_API_KEY
 from setting import CSE_SEARCH_ENGINE_ID
+from setting import HIKARI_VALID_CHAR_TYPE
 
 # HIKARI の主に Talk 関係で使用する汎用メソッドを書いておくところ
 
@@ -95,6 +97,22 @@ def echoRandomQuotation(tableName):
             res = k.selectRandom(tableName)
             return [stateLib[res[2]], res[1]]
         return func
+
+# 使用不可能な文字タイプかないかどうか判定する
+def isValidCharType(text):
+    result = True
+    if isinstance(text, unicode) == True:
+        t = text
+    else:
+        t = text.decode("utf-8")
+    for char in t:
+        charType = unicodedata.name(char).split(" ")[0]
+        if charType in ["FULLWIDTH", "HALFWIDTH"]:
+            charType = unicodedata.name(char).split(" ")[1]
+        if (charType in HIKARI_VALID_CHAR_TYPE) == False:
+            result = False
+            break
+    return result 
 
 # 現在時刻を取得する
 def getCurrentTime():

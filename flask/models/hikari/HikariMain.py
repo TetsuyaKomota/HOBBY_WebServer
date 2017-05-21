@@ -11,6 +11,7 @@ import HikariTalkFirst
 import HikariReply
 
 from HikariStatics import getStateLib
+from HikariStatics import isValidCharType 
 
 # ひかりちゃんAI クラス
 
@@ -35,7 +36,7 @@ class Hikari:
             result = False
             message = "void name."
         # 不適切な文字が含まれていないか
-        elif self.isValidCharType(name)  == False:
+        elif isValidCharType(name)  == False:
             result = False
             message = "include invalid charactor."
         # ユーザー名の長さが適切か
@@ -48,22 +49,6 @@ class Hikari:
             message = "already exist."
            
         return [result, message]
-
-    # 使用不可能な文字タイプかないかどうか判定する
-    def isValidCharType(self, text):
-        result = True
-        if isinstance(text, unicode) == True:
-            t = text
-        else:
-            t = text.decode("utf-8")
-        for char in t:
-            charType = unicodedata.name(char).split(" ")[0]
-            if charType in ["FULLWIDTH", "HALFWIDTH"]:
-                charType = unicodedata.name(char).split(" ")[1]
-            if (charType in HIKARI_VALID_CHAR_TYPE) == False:
-                result = False
-                break
-        return result
     # 既に存在するユーザーでないか判定する
     def isNewUserName(self, name):
         result = True
