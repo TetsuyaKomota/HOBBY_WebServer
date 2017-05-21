@@ -109,9 +109,9 @@ if __name__ == "__main__":
     with open("gomi.dill", "wb") as f:
         dill.dump(dic, f)
     with open("gomi.dill", "rb") as f:
+        dic = dill.load(f)
     '''
     if True:
-        dic = dill.load(f)
         remdic = selectWordswithTFIDF(dic)
         count = countingNoun(dic)
         sumnoun = sum(count.values())
