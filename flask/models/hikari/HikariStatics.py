@@ -1,8 +1,14 @@
 #-*- coding: utf-8 -*-
-
+import requests
+import urllib
+import dill
+import re
 from random import random
+from natto import MeCab
 
 from lib.DBController import Ksql
+from setting import CSE_API_KEY
+from setting import CSE_SEARCH_ENGINE_ID
 
 # HIKARI の主に Talk 関係で使用する汎用メソッドを書いておくところ
 
@@ -75,72 +81,72 @@ def getQuotationState(entry):
 
 # quotation 系のテーブル名を指定するとランダムで一件取得する
 def echoRandomQuotation(tableName):
-        k = Ksql.Ksql()
-        # テーブル名は quotation 始まり限定
-        if tableName.split("_")[0] != u"quotation":
-            return None
-        else:
-            def func(inputs):
-                talk_log, state, query = inputs
-                stateLib = getStateLib()        
-                res = k.selectRandom(tableName)
-                return [stateLib[res[2]], res[1]]
-            return func
+    k = Ksql.Ksql()
+    # テーブル名は quotation 始まり限定
+    if tableName.split("_")[0] != u"quotation":
+        return None
+    else:
+        def func(inputs):
+            talk_log, state, query = inputs
+            stateLib = getStateLib()        
+            res = k.selectRandom(tableName)
+            return [stateLib[res[2]], res[1]]
+        return func
 
+# Google Custom Search API を用いて記事を検索し，記事のタイトルをキー，内容を値とした辞書を返す
+def getCSEDict(query, numofArticles):
+    url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s&num=%s"
+    url = url % (CSE_API_KEY, CSE_SEARCH_ENGINE_ID, urllib.quote(query), str(numofArticles))
+    # API をリクエスト
+    res = requests.get(url)
+    # レスポンスから単語の辞書を作る
+    articles = {}
+    for i in res.json()["items"] :
+        # URL から HTML を取得する
+        html = requests.get(i["link"]).text
+        # いろいろ整理する．タグと関数っぽいところを消す
+        html = re.sub("<[\d\D]*?>", "", html)
+        html = re.sub("{[\d\D]*?}", "", html)
+        # 改行とタブを消す
+        html = re.sub("(\n|\t)", " ", html)
+        # カンマを消す
+        html = re.sub(",", " ", html)
+        # 空白を減らす
+        html = re.sub("( |　)+", " ", html)
+        # 形態素解析を行う
+        m = MeCab()
+        html_wakati = m.parse(html.encode("utf-8")).split("\n")
+        words = ""
+        for w in html_wakati:
+            temp = w.split(",")
+            if len(temp) < 2:
+                break
+            # 名詞，動詞，形容詞以外は無視
+            if len(temp[0].split("\t")) < 2 or temp[0].split("\t")[1] not in ("名詞", "動詞", "形容詞"):
+                continue
+            if temp[6] != "*":
+                tempword = temp[6]
+            else:
+                tempword = temp[0].split("\t")[0]
+            # 英単語を無視する
+            # TODO これでいいか考える
+            if tempword == tempword.decode("utf-8"):
+                continue
+            # 追加する
+            words = words + tempword + " "
+        articles[i["title"]] = words
+    return articles
 
 # デバッグ用．
 if __name__ == "__main__":
+    '''
     f = echoRandomQuotation("quotation_talk_first") 
     res = f(({}, 0, u"ほげほげ"))
     for c in res:
         print(c)
-'''
-def addPrefix(query):
-    return("これは"+query)
-def hello(query):
-    return "こんにちは"
-def nest_hello(query):
-    return "入れ子からこんにちは"
-def nest(query):
-    print("この関数は実行されました")
-    d = "入れ子"
-    e = nest_hello
-    bag = {d:6, e:4}
-    rep = pick_random(bag, "入れ子関数")
-    return rep
-
-if __name__ == "__main__":
-    a = "文字列"
-    b = addPrefix
-    c = hello
-    d = nest
-
-    bag = {a:6, b:2, c:1, d:1} 
-
-    itr = 100
-    q = "関数"
-    t = itr
-    na = 0
-    nb = 0
-    nc = 0
-    nd = 0
-    ne = 0
-    for _ in range(itr):
-        rep = pick_random(bag, q)
-        if rep == a:
-            na = na + 1
-        elif rep == b(q):
-            nb = nb + 1
-        elif rep == c(q):
-            nc = nc + 1
-        elif rep == "入れ子":
-            nd = nd + 1
-        elif rep == nest_hello("入れ子関数"):
-            ne = ne + 1
-        else:
-            print("何かおかしい")
-            exit()
-        #
-    #
-    print("a:" + str(float(na)/t) + "  b:" + str(float(nb)/t)  + "  c:" + str(float(nc)/t) + "  d:" + str(float(nd)/t)+ "  e:" + str(float(ne)/t))
-'''
+    '''
+    dic = getCSEDict("けものフレンズ", 10)
+    for d in dic:
+        print(d)
+        print(dic[d])
+    print(len(dic))
