@@ -135,6 +135,10 @@ def getCSEDict(query, numofArticles):
     res = requests.get(url)
     # レスポンスから単語の辞書を作る
     articles = {}
+    # 一件も出てないっぽかったら空の辞書を返す
+    if "items" not in res.json().keys():
+        print("HikariStatics:getCSEDict:nothing result")
+        return {}
     for i in res.json()["items"] :
         # URL から HTML を取得する
         html = requests.get(i["link"]).text
