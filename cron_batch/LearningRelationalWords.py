@@ -23,7 +23,7 @@ def getUnknownWord():
     for _ in range(500):
         query = k.selectRandom("talk_log")[3]
         m = MeCab()
-        print("実行前 : " + query.encode("utf-8"))
+        # print("実行前 : " + query.encode("utf-8"))
         query_wakati = m.parse(query.encode("utf-8")).split("\n")
         unknownword = ""
         flg = False
@@ -101,7 +101,7 @@ def selectWordswithTFIDF(dic):
 if __name__ == "__main__":
    
     query = getUnknownWord() 
-    print("実行後 : " + query)
+    print("LearningRelationalWords:searchword : " + query)
     if query == "":
         exit()
     dic = getCSEDict(query, 10)
@@ -115,7 +115,7 @@ if __name__ == "__main__":
         remdic = selectWordswithTFIDF(dic)
         count = countingNoun(dic)
         sumnoun = sum(count.values())
-        print(sumnoun)
+        # print(sumnoun)
         for c in count:
             if count[c] > (sumnoun*0.005) and c not in remdic and isValidCharType(c):
                 print(c + ":" + str(count[c]) + " : " + unicodedata.name(c.decode("utf-8")[0]))
