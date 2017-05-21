@@ -5,6 +5,8 @@ import dill
 import re
 from random import random
 from natto import MeCab
+from datetime import datetime
+from datetime import timedelta
 
 from lib.DBController import Ksql
 from setting import CSE_API_KEY
@@ -42,6 +44,20 @@ def getStateKeyId(state):
    if state == u"shy":
         return 5
 
+# quotation のエントリーを一つ加えると対応する state を返す
+# TODO いつか消す
+def getQuotationState(entry):
+    stateLib = getStateLib()
+    temp = {}
+    temp[1] = entry[2]
+    temp[2] = entry[3]
+    temp[3] = entry[4]
+    temp[4] = entry[5]
+    if h==a and a==d and d==s:
+        return "normal"
+    else:
+        return stateLib[max(temp)]
+
 # ランダムに一つ選択して文字列を返す関数
     # bag   : dict. 選択肢を key, 比率を value にする
     # query : str.  bag から選択された要素が関数であるならこれを引数に実行した結果を返す．1引数限定
@@ -66,19 +82,6 @@ def pick_random(bag, *inputs):
     else:
         return output(inputs)
 
-# quotation のエントリーを一つ加えると対応する state を返す
-def getQuotationState(entry):
-    stateLib = getStateLib()
-    temp = {}
-    temp[1] = entry[2]
-    temp[2] = entry[3]
-    temp[3] = entry[4]
-    temp[4] = entry[5]
-    if h==a and a==d and d==s:
-        return "normal"
-    else:
-        return stateLib[max(temp)]
-
 # quotation 系のテーブル名を指定するとランダムで一件取得する
 def echoRandomQuotation(tableName):
     k = Ksql.Ksql()
@@ -92,6 +95,19 @@ def echoRandomQuotation(tableName):
             res = k.selectRandom(tableName)
             return [stateLib[res[2]], res[1]]
         return func
+
+# 現在時刻を取得する
+def getCurrentTime():
+    # EC2 上ではなぜか9時間 遅れているようなので，調整
+    now = datetime.now() + timedelta(hours=9)
+    response = "今は "
+    response = response + str(now.month) + "月 "
+    response = response + str(now.day) + "日の "
+    response = response + str(now.hour) + "時 "
+    response = response + str(now.minute) + "分 "
+    response = response + "だよ"
+    return response
+
 
 # Google Custom Search API を用いて記事を検索し，記事のタイトルをキー，内容を値とした辞書を返す
 def getCSEDict(query, numofArticles):

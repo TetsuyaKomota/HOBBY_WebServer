@@ -12,6 +12,7 @@ from lib.DBController import Ksql
 from HikariStatics import pick_random
 from HikariStatics import getStateLib
 from HikariStatics import echoRandomQuotation
+from HikariStatics import getCurrentTime
 
 # ===============================================================
 
@@ -19,18 +20,8 @@ from HikariStatics import echoRandomQuotation
 def echo_currentTime(inputs):
     talk_log, state, query = inputs
 
+    response = getCurrentTime()
     # 表情は normal に固定
-    # TODO いたるところに state のリテラルをぶち込んでる状態やめたい
-
-    # EC2 上ではなぜか9時間 遅れているようなので，調整
-    now = datetime.now() + timedelta(hours=9)
-    response = "今は "
-    response = response + str(now.month) + "月 "
-    response = response + str(now.day) + "日の "
-    response = response + str(now.hour) + "時 "
-    response = response + str(now.minute) + "分 "
-    response = response + "だよ"
-
     return ["normal", response.decode("utf-8")]
 
 # 名詞について質問する
