@@ -21,7 +21,7 @@ var TalkRoom = React.createClass(
         handleLogin : function(e){
             var hashedPass = this.laundering(this.refs.login_user_name.value, this.refs.login_password.value);
             $.ajax({
-                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_login',
+                url: 'http://ec2-13-113-21-149.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_login',
                 type: 'POST',
                 scriptCharset: 'UTF-8',
                 data: {
@@ -46,7 +46,7 @@ var TalkRoom = React.createClass(
             this.setState({cu_disabled : true});
             var hashedPass = this.laundering(this.refs.cu_user_name.value, this.refs.cu_password.value);
             $.ajax({
-                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_create_user',
+                url: 'http://ec2-13-113-21-149.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_create_user',
                 type: 'POST',
                 scriptCharset: 'UTF-8',
                 data: {
@@ -80,7 +80,7 @@ var TalkRoom = React.createClass(
                 return;
             }
                 $.ajax({
-                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_user_validation',
+                url: 'http://ec2-13-113-21-149.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_user_validation',
                 type: 'POST',
                 scriptCharset: 'UTF-8',
                 data: {

@@ -23,7 +23,7 @@ var TalkRoom = React.createClass(
 
         createAgent : function(){
             $.ajax({
-                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_start_conversation',
+                url: 'http://ec2-13-113-21-149.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_start_conversation',
                 type: 'GET',
                 scriptCharset: 'UTF-8',
                 data: {
@@ -39,7 +39,7 @@ var TalkRoom = React.createClass(
 
         deleteAgent : function(){
             $.ajax({
-                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_end_conversation',
+                url: 'http://ec2-13-113-21-149.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_end_conversation',
                 type: 'GET',
                 scriptCharset: 'UTF-8',
                 data: {
@@ -55,7 +55,7 @@ var TalkRoom = React.createClass(
 
         talk : function(){
             $.ajax({
-                url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_talk',
+                url: 'http://ec2-13-113-21-149.ap-northeast-1.compute.amazonaws.com:5000/api/hikari_talk',
                 type: 'GET',
                 scriptCharset: 'UTF-8',
                 data: {

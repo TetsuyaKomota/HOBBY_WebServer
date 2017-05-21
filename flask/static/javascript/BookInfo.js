@@ -45,7 +45,7 @@ var BookInfo = React.createClass(
                     author : ''
                 });
                 let a = $.ajax({
-                    url: 'http://ec2-13-113-169-250.ap-northeast-1.compute.amazonaws.com:5000/api/book_info',
+                    url: 'http://ec2-13-113-21-149.ap-northeast-1.compute.amazonaws.com:5000/api/book_info',
                     Type: 'GET',
                     scriptCharset: 'UTF-8',
                     data: {'isbn' : e.target.value},
