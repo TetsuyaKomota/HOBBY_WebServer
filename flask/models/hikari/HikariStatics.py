@@ -138,6 +138,7 @@ def getCSEDict(query, numofArticles):
     # 一件も出てないっぽかったら空の辞書を返す
     if "items" not in res.json().keys():
         print("HikariStatics:getCSEDict:nothing result")
+        print("HikariStatics:getCSEDict:response:message : " + str(res.json()["error"]["code"]) + " : " + res.json()["error"]["message"])
         return {}
     for i in res.json()["items"] :
         # URL から HTML を取得する

@@ -30,13 +30,13 @@ def ques_noun(inputs):
     
     m = MeCab()
     words = m.parse(query.encode("utf-8")).split("\n")
-    bag = {}
+    bag = {"幸せ" : 1}
     for w in words:
         n = w.split(",")
         if len(n) < 2:
             break
         # elif n[0].split("\t")[1] == "名詞" and n[1] != "非自立":
-        elif n[0].split("\t")[1] == "名詞" and n[6] == "*":
+        elif n[0].split("\t")[1] == "名詞" and (n[6] == "*"or n[1] == "固有名詞"):
             if n[0].split("\t")[0] in bag.keys():
                 bag[n[0].split("\t")[0]] = bag[n[0].split("\t")[0]] + 1
             else:
@@ -67,6 +67,8 @@ def hasWordofthisPOS(query, POS, unknown=False):
 
 # メインの talk 部分
 def talk(talk_log, query):
+    # query の , は全角に変換．（そうしないと MeCab の解析ができない）
+    query = re.sub(u",", u"，", query)
     quotation = 10
     quotationsothen = 1
     curtime = 1
@@ -85,6 +87,9 @@ def talk(talk_log, query):
     # 知らない名詞を見かけたら ques_noun を実行する 
     if hasWordofthisPOS(query, "名詞", unknown=True):
         quesnoun = quesnoun + 200
+    # 知らなくなくても名詞を見かけたら ques_noun を実行する比率を上げる
+    if hasWordofthisPOS(query, "名詞", unknown=False):
+        quesnoun = quesnoun + 20
     # 何か教えてくれたっぽかったら so_then から乱択する
     if re.search(u"(だよ|それは|らしい)", query):
         quotationsothen = quotationsothen + 100
