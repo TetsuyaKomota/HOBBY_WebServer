@@ -12,6 +12,14 @@ k = Ksql.Ksql()
 def hikariTalk(request, hikariMain):
 
     user_id = request.cookies.get('login', None)
+    # login が成功してるか，Cookie を取得して確認する
+    if user_id is None:
+        output = {}
+        output['success'] = False
+        output['message'] = "cannot confirm login"
+        return json.dumps(output, indent=4, ensure_ascii=False)
+        
+        
     talk_id = request.args.get("talk_id", '')
     query = request.args.get("query", '')
     
