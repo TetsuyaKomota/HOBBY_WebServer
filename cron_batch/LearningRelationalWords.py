@@ -13,6 +13,9 @@ from natto import MeCab
 
 from lib.DBController import Ksql
 
+from setting import HT_TFIDF_HIGH
+from setting import HT_TFIDF_LOW
+
 k = Ksql.Ksql()
 
 # TFIDF を用いて単語の関係を学習する
@@ -85,7 +88,7 @@ def selectWordswithTFIDF(dic):
 
     for idx in range(len(bag_tfidf.toarray().T)):
         pick = bag_tfidf.toarray().T[idx].max()
-        if pick < 0.25:
+        if pick < HT_TFIDF_LOW or pick > HT_TFIDF_HIGH:
             for name, i in count.vocabulary_.items():
                 if idx == i:
                     output.append(name.encode("utf-8"))
@@ -95,7 +98,6 @@ def selectWordswithTFIDF(dic):
         #
     #
     return output
-
 # 
 
 if __name__ == "__main__":

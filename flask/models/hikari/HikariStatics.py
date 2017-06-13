@@ -127,7 +127,7 @@ def getCurrentTime():
     return response
 
 # Google Custom Search API を用いて記事を検索し，取得する
-def getCSEArticles():
+def getCSEArticles(query, numofArticles):
     url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s&num=%s"
     url = url % (CSE_API_KEY, CSE_SEARCH_ENGINE_ID, urllib.quote(query), str(numofArticles))
     # API をリクエスト
@@ -137,13 +137,7 @@ def getCSEArticles():
 
 # Google Custom Search API を用いて記事を検索し，記事のタイトルをキー，内容を値とした辞書を返す
 def getCSEDict(query, numofArticles):
-    '''
-    url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s&num=%s"
-    url = url % (CSE_API_KEY, CSE_SEARCH_ENGINE_ID, urllib.quote(query), str(numofArticles))
-    # API をリクエスト
-    res = requests.get(url)
-    '''
-    res = getCSEArticles()
+    res = getCSEArticles(query, numofArticles)
     # レスポンスから単語の辞書を作る
     articles = {}
     # 一件も出てないっぽかったら空の辞書を返す
