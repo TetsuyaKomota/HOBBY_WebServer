@@ -16,7 +16,7 @@ from HikariStatics import getCurrentTime
 
 # 適当な確率でツイートする
 r = random()
-if r < 0.6:
+if r < 0.9:
     print("ignored")
     exit()
 
