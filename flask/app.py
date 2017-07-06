@@ -3,6 +3,7 @@
 from subprocess import check_output
 from flask import Flask, redirect, request, render_template, make_response
 from utils.decorator_auth import requires_auth
+from werkzeug.wsgi import LimitedStream
 import json
 
 import time
@@ -21,8 +22,28 @@ from controllers.HikariStartConversation import hikariStartConversation
 from controllers.HikariTalk import hikariTalk
 from controllers.HikariEndConversation import hikariEndConversation
 
+class StreamConsumingMiddleware(object):
+
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        stream = LimitedStream(environ['wsgi.input'],
+                               int(environ['CONTENT_LENGTH'] or 0))
+        environ['wsgi.input'] = stream
+        app_iter = self.app(environ, start_response)
+        try:
+            stream.exhaust()
+            for event in app_iter:
+                yield event
+        finally:
+            if hasattr(app_iter, 'close'):
+                app_iter.close()
+
 app = Flask(__name__)
 hikari = HikariMain.Hikari()
+app.wsgi_app = StreamConsumingMiddleware(app.wsgi_app)
+
 
 @app.before_request
 def basic_auth():
@@ -111,4 +132,5 @@ def Api_HikariEndConversation():
 
 
 if __name__ == "__main__":
-    app.run( debug = True, host=HOSTNAME, port=PORT)
+    # app.run( debug = True, host=HOSTNAME, port=PORT)
+    app.run(host=HOSTNAME, port=PORT)
