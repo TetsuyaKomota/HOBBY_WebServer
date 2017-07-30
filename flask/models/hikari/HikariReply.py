@@ -30,7 +30,7 @@ def ques_noun(inputs):
     
     m = MeCab.Tagger()
     words = m.parse(query).split("\n")
-    bag = {"幸せ" : 1}
+    bag = {"それ" : 1}
     for w in words:
         n = w.split(",")
         if len(n) < 2:
