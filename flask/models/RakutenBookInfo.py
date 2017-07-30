@@ -43,15 +43,15 @@ def Api_getBookInfo(input_Isbn, date):
                 '|}'
         
         else:
-            output["title"] = data[u'Items'][0][u'Item'][u'title'].encode('utf-8')
-            output["author"] = data[u'Items'][0][u'Item'][u'author'].encode('utf-8')
+            output["title"] = data[u'Items'][0][u'Item'][u'title']
+            output["author"] = data[u'Items'][0][u'Item'][u'author']
             output["bodydata"] = '&amazon('+converted_Isbn+'){large}\n'+ \
                 '*基本情報\n' +\
                 '{| width="500px" class="custom-css" style="color:#6e7955"\n' + \
-                '|タイトル|'+data[u'Items'][0][u'Item'][u'title'].encode('utf-8')+'|\n' + \
-                '|作者名|'+data[u'Items'][0][u'Item'][u'author'].encode('utf-8')+'|\n' + \
+                '|タイトル|'+data[u'Items'][0][u'Item'][u'title']+'|\n' + \
+                '|作者名|'+data[u'Items'][0][u'Item'][u'author']+'|\n' + \
                 '|巻数||\n' + \
-                '|出版社|'+data[u'Items'][0][u'Item'][u'publisherName'].encode('utf-8')+'|\n' + \
+                '|出版社|'+data[u'Items'][0][u'Item'][u'publisherName']+'|\n' + \
                 '|部室に追加した人|'+'|\n' + \
                 '|最終更新者|'+'|\n' + \
                 '|編集日|' + date + '|\n' + \
