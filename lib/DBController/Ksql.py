@@ -46,10 +46,14 @@ class Ksql:
         count = 0
         for c in values:
             count = count + 1
+            """
             if isinstance(values[c], unicode):
                 sql = sql + u"'" + values[c] + u"'"
             elif isinstance(values[c], str):
                 sql = sql + u"'" + values[c].decode("utf-8") + u"'"
+            """
+            if isinstance(values[c], str):
+                sql = sql + u"'" + values[c] + u"'"
             elif isinstance(values[c], int) or isinstance(values[c], float):
                 sql = sql + u"'" + str(values[c]) + u"'"
             else:
@@ -117,6 +121,7 @@ class Ksql:
     def selectRandom(self, tableName):
         cursor = self.conn.cursor()
         # SQL 文を生成
+        """
         if isinstance(tableName, unicode):
             t = tableName
         elif isinstance(tableName, str):
@@ -124,6 +129,8 @@ class Ksql:
         else:
             print("DBController.Ksql.selectRandom:ERROR! - invalid type of tableName")
             return None
+        """
+        t = tableName
         sql = u"select * from " + t + " order by rand() limit 1;"
         # 実行
         cursor.execute(sql)

@@ -5,7 +5,7 @@ from datetime import datetime
 from datetime import timedelta
 from random import random
 import re
-from natto import MeCab
+import MeCab
 
 from lib.DBController import Ksql
 
@@ -22,14 +22,14 @@ def echo_currentTime(inputs):
 
     response = getCurrentTime()
     # 表情は normal に固定
-    return ["normal", response.decode("utf-8")]
+    return ["normal", response]
 
 # 名詞について質問する
 def ques_noun(inputs):
     talk_log, state, query = inputs
     
-    m = MeCab()
-    words = m.parse(query.encode("utf-8")).split("\n")
+    m = MeCab.Tagger()
+    words = m.parse(query).split("\n")
     bag = {"幸せ" : 1}
     for w in words:
         n = w.split(",")
@@ -45,14 +45,14 @@ def ques_noun(inputs):
     #
     selected = pick_random(bag, None, None, None)
     response = selected + "って何？"
-    return ["normal", response.decode("utf-8")]
+    return ["normal", response]
 
 # ===============================================================
 
 # クエリ内に指定した品詞の単語が存在するか判定する
 def hasWordofthisPOS(query, POS, unknown=False):
-    m = MeCab()
-    words = m.parse(query.encode("utf-8")).split("\n")
+    m = MeCab.Tagger()
+    words = m.parse(query).split("\n")
     for w in words:
         if len(w.split(",")) < 2:
             break

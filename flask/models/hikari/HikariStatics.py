@@ -5,7 +5,7 @@ import dill
 import re
 import unicodedata
 from random import random
-from natto import MeCab
+import MeCab
 from datetime import datetime
 from datetime import timedelta
 
@@ -101,10 +101,7 @@ def echoRandomQuotation(tableName):
 # 使用不可能な文字タイプかないかどうか判定する
 def isValidCharType(text):
     result = True
-    if isinstance(text, unicode) == True:
-        t = text
-    else:
-        t = text.decode("utf-8")
+    t = text
     for char in t:
         charType = unicodedata.name(char).split(" ")[0]
         if charType in ["FULLWIDTH", "HALFWIDTH"]:
@@ -158,8 +155,8 @@ def getCSEDict(query, numofArticles):
         # 空白を減らす
         html = re.sub("( |　)+", " ", html)
         # 形態素解析を行う
-        m = MeCab()
-        html_wakati = m.parse(html.encode("utf-8")).split("\n")
+        m = MeCab.Tagger()
+        html_wakati = m.parse(html).split("\n")
         words = ""
         for w in html_wakati:
             temp = w.split(",")
@@ -174,8 +171,10 @@ def getCSEDict(query, numofArticles):
                 tempword = temp[0].split("\t")[0]
             # 英単語を無視する
             # TODO これでいいか考える
+            """
             if tempword == tempword.decode("utf-8"):
                 continue
+            """
             # 追加する
             words = words + tempword + " "
         articles[i["title"]] = words

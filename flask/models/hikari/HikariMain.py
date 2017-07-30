@@ -1,7 +1,6 @@
 #-*- coding:utf-8 -*-
 
 import random
-import unicodedata
 
 from setting import HIKARI_USERNAME as USERNAME
 from setting import HIKARI_MAX_USER_NAME_LENGTH, HIKARI_VALID_CHAR_TYPE
@@ -54,11 +53,7 @@ class Hikari:
         result = True
         k = Ksql.Ksql()
         users = []
-        if isinstance(name, unicode) == True:
-            n = name
-        else:
-            n = name.decode("utf-8")
-        #
+        n = name
         for e in k.select(u"user", select = {u"user_name":0}):
             users.append(e[0])
         if n in users:
@@ -101,10 +96,7 @@ class Hikari:
         result = True
         userId = -1
         k = Ksql.Ksql()
-        if isinstance(userName, unicode) == True:
-            n = userName
-        else:
-            n = userName.decode("utf-8")
+        n = userName
         user = k.select(u"user", where={u"user_name" : n, u"password" : password})
         if len(user) != 1:
             result = False

@@ -24,6 +24,6 @@ def hikariStartConversation(request, hikariMain):
     output['talk_id'] = newIdx
     output['num_of_talk'] = len(hikariMain.talk_log)
     output['state'] = reply["state"]
-    output['response'] = reply["response"].encode("utf-8")
+    output['response'] = reply["response"]
 
     return json.dumps(output, indent=4, ensure_ascii=False)

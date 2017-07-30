@@ -41,6 +41,6 @@ def hikariTalk(request, hikariMain):
     output = {}
     output['success'] = True
     output['state'] = reply["state"]
-    output['response'] = reply["response"].encode("utf-8")
+    output['response'] = reply["response"]
 
     return json.dumps(output, indent=4, ensure_ascii=False)
