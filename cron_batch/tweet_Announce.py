@@ -36,7 +36,8 @@ bag = {
 
 response = pick_random(bag)
 
-talkRoomURL = "http://" + HOSTNAME + ":" + str(PORT) + "/talk_room"
+# talkRoomURL = "http://" + HOSTNAME + ":" + str(PORT) + "/talk_room"
+talkRoomURL = "http://" + HOSTNAME + "/talk_room"
 
 response = response + "\n" + talkRoomURL
 
