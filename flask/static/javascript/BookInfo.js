@@ -45,7 +45,7 @@ var BookInfo = React.createClass(
                     author : ''
                 });
                 let a = $.ajax({
-                    url: 'http://ec2-13-113-21-149.ap-northeast-1.compute.amazonaws.com:5000/api/book_info',
+                    url: 'http://ec2-13-113-21-149.ap-northeast-1.compute.amazonaws.com/api/book_info',
                     Type: 'GET',
                     scriptCharset: 'UTF-8',
                     data: {'isbn' : e.target.value},
@@ -83,7 +83,7 @@ var BookInfo = React.createClass(
 
         insertToDB : function() {
                  $.ajax({
-                    url: 'http://13.113.169.250:5000/api/book_insert',
+                    url: 'http://13.113.169.250/api/book_insert',
                     Type: 'GET',
                     scriptCharset: 'UTF-8',
                     data: {
@@ -170,7 +170,7 @@ var BookInfo = React.createClass(
             });
 
             $.ajax({
-                url: 'http://13.113.169.250:5000/api/book_insert',
+                url: 'http://13.113.169.250/api/book_insert',
                 Type: 'GET',
                 scriptCharset: 'UTF-8',
                 data: {
