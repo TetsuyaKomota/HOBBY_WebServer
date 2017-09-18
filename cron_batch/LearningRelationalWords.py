@@ -9,7 +9,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 from HikariStatics import getCSEDict
 from HikariStatics import isValidCharType
-from natto import MeCab
+# from natto import MeCab
+import MeCab
 
 from lib.DBController import Ksql
 
@@ -25,9 +26,10 @@ def getUnknownWord():
     unknownword = ""
     for _ in range(500):
         query = k.selectRandom("talk_log")[3]
-        m = MeCab()
-        # print("実行前 : " + query.encode("utf-8"))
-        query_wakati = m.parse(query.encode("utf-8")).split("\n")
+        # m = MeCab()
+        m = MeCab.Tagger()
+        print(query)
+        query_wakati = m.parse(query).split("\n")
         unknownword = ""
         flg = False
         for q in query_wakati:
@@ -35,7 +37,6 @@ def getUnknownWord():
             if len(temp) < 2:
                 break
             # 不必要なところで分かち書きしてるかもしれないので，
-            # 
             if temp[6] == "*":
                 # 微妙にランダム性を持たせる
                 if flg == False and random() > 0.25:
@@ -46,7 +47,7 @@ def getUnknownWord():
                 break
         if len(unknownword) < 2:
             continue
-        entries = k.select("knowledge_related_word", where={"query":unknownword.decode("utf-8")})
+        entries = k.select("knowledge_related_word", where={"query":unknownword})
         # knowledge テーブルにないワードの場合，それを返す
         if len(entries) == 0:
             return unknownword
@@ -54,7 +55,7 @@ def getUnknownWord():
 
 # 取得してきた辞書から，名詞をカウントする
 def countingNoun(dic):
-    m = MeCab()
+    m = MeCab.Tagger()
     count = {}
     for d in dic:
         # getCSEDict で取得した単語集は空白区切りになっているはずなので，空白で split
@@ -107,18 +108,10 @@ if __name__ == "__main__":
     if query == "":
         exit()
     dic = getCSEDict(query, 10)
-    '''
-    with open("gomi.dill", "wb") as f:
-        dill.dump(dic, f)
-    with open("gomi.dill", "rb") as f:
-        dic = dill.load(f)
-    '''
-    if True:
-        remdic = selectWordswithTFIDF(dic)
-        count = countingNoun(dic)
-        sumnoun = sum(count.values())
-        # print(sumnoun)
-        for c in count:
-            if count[c] > (sumnoun*0.005) and c not in remdic and isValidCharType(c):
-                print(c + ":" + str(count[c]) + " : " + unicodedata.name(c.decode("utf-8")[0]))
-                k.insert("knowledge_related_word", values={"query" : query.decode("utf-8"), "related_word" : c.decode("utf-8")})
+    remdic = selectWordswithTFIDF(dic)
+    count = countingNoun(dic)
+    sumnoun = sum(count.values())
+    for c in count:
+        if count[c] > (sumnoun*0.005) and c not in remdic and isValidCharType(c):
+            print(c + ":" + str(count[c]) + " : " + unicodedata.name(c.decode("utf-8")[0]))
+            k.insert("knowledge_related_word", values={"query" : query.decode("utf-8"), "related_word" : c.decode("utf-8")})
