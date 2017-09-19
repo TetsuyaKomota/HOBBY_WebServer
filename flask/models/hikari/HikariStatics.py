@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 import requests
-import urllib
+# import urllib
+import urllib.parse
 import dill
 import re
 import unicodedata
@@ -126,7 +127,7 @@ def getCurrentTime():
 # Google Custom Search API を用いて記事を検索し，取得する
 def getCSEArticles(query, numofArticles):
     url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s&num=%s"
-    url = url % (CSE_API_KEY, CSE_SEARCH_ENGINE_ID, urllib.quote(query), str(numofArticles))
+    url = url % (CSE_API_KEY, CSE_SEARCH_ENGINE_ID, urllib.parse.quote(query), str(numofArticles))
     # API をリクエスト
     res = requests.get(url)
     return res    
@@ -175,6 +176,16 @@ def getCSEDict(query, numofArticles):
             if tempword == tempword.decode("utf-8"):
                 continue
             """
+            tempFlg = True
+            for t in tempword:
+                # ASCII 上で 32~127 は 半角文字を表すらしい
+                # http://qiita.com/kakk_a/items/3aef4458ed2269a59d63
+                if t not in [chr(c) for c in range(32, 127)]:
+                    tempFlg = False
+                    break
+            # 全文字半角英数なら英単語だと判定する
+            if tempFlg == True:
+                continue
             # 追加する
             words = words + tempword + " "
         articles[i["title"]] = words
