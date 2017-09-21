@@ -10,3 +10,5 @@ cron_batch/log.txt
 
 *.swp
 *.swo
+
+*.dill
