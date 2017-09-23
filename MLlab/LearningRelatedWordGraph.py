@@ -51,7 +51,10 @@ def run(dillpath="dills"):
             # query = np.random.choice(list(kemono))
             if G["nodes"][query] == False:
                 break
-        
+       
+        # 選択した単語を検索済みに変更する 
+        G["nodes"][query] = True:
+    
         print("search related words of "+query)
         res = getCSEArticles(query, 10)
         if "items" not in res.json().keys():

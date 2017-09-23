@@ -8,7 +8,7 @@ def searchstillUnknownRelatedWords(G, query):
 
 if __name__ == "__main__":
     while True:
-        with open("G_CSE.dill", "rb") as f:
+        with open("dills/G_CSE.dill", "rb") as f:
             G = dill.load(f)
 
         print("何について聞きたい？")
@@ -17,6 +17,10 @@ if __name__ == "__main__":
         if query == "bye":
             print("じゃーね！")
             break
+        elif query == "nodes":
+            print("今は" + str(len(G["nodes"])) + " 単語を知ってるよ！")
+        elif query == "knowns":
+            print("今までで " + str(len([a for a in G["nodes"] if G["nodes"][a] == True])) + " 単語について調べたよ！")
         elif query[:5] == "unk->":
             unk = searchstillUnknownRelatedWords(G, query.split("->")[1])
             if len(unk) == 0:
@@ -28,8 +32,19 @@ if __name__ == "__main__":
         elif query not in G["nodes"]:
             print("ごめん，それは知らないなぁ...")
             if len(query) >= 4:
-                print("今度調べてみるね！")
-                G["nodes"][query] = False
+                print("調べるリストに入れておいた方がいい？ Y or n")
+                while True:
+                    print(">", end="")
+                    rep = input()
+                    if rep not in ["Y", "n"]:
+                        print("ん？どっち？ Y か n で答えてよ")
+                        continue
+                    elif rep == "Y":
+                        print("了解！いつか調べるね！")
+                        G["nodes"][query] = False
+                    else:
+                        print("了解！じゃあもう忘れちゃうね！")
+                    break
         else:
             rel = {}
             for e in G["edges"]:
