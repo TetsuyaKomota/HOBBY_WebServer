@@ -73,17 +73,28 @@ if __name__ == "__main__":
             # 形態素解析を行う
             html_wakati = m.parse(html).split("\n")
             words = {}
+            concat = ""
+            catflg = False
             for w in html_wakati:
                 temp = w.split(",")
                 if len(temp) < 2:
                     break
                 # 名詞以外は無視
                 if len(temp[0].split("\t")) < 2 or temp[0].split("\t")[1] not in ("名詞"):
-                    continue
-                if temp[6] != "*":
-                    tempword = temp[6]
+                    if catflg == False:
+                        continue
+                    else:
+                        tempword = concat
+                        concat = ""
+                        catflg = False
                 else:
-                    tempword = temp[0].split("\t")[0]
+                    if temp[6] != "*":
+                        tempword = temp[6]
+                    else:
+                        tempword = temp[0].split("\t")[0]
+                    if concat != "":
+                        catflg = True
+                    concat += tempword
                 # 英単語を無視する
                 tempFlg = False
                 for t in tempword:
