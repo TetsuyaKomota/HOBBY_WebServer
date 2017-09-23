@@ -53,7 +53,7 @@ def run(dillpath="dills"):
                 break
        
         # 選択した単語を検索済みに変更する 
-        G["nodes"][query] = True:
+        G["nodes"][query] = True
     
         print("search related words of "+query)
         res = getCSEArticles(query, 10)
@@ -62,7 +62,11 @@ def run(dillpath="dills"):
             exit()
         articles = {}
         for item in res.json()["items"]:
-            html = requests.get(item["link"]).text
+            try:
+                html = requests.get(item["link"]).text
+            except:
+                print("ダメなページっぽい:"+str(item["link"]))
+                html = ""
             # いろいろ整理する．タグと関数っぽいところを消す
             html = re.sub("<[\d\D]*?>", "", html)
             html = re.sub("{[\d\D]*?}", "", html)
