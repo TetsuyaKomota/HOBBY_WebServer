@@ -14,9 +14,9 @@ from setting import HT_NUM_OF_CANDIDATE
 from setting import HT_NUM_OF_SELECTION
 
 # Google Custom Search API を用いて記事を検索し，取得する
-def getCSEArticles(query, numofArticles):
-    url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s&num=%s"
-    url = url % (CSE_API_KEY, CSE_SEARCH_ENGINE_ID, urllib.parse.quote(query), str(numofArticles))
+def getCSEArticles(query, numofArticles, startIdx=1):
+    url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=%s&num=%s&start=%s"
+    url = url % (CSE_API_KEY, CSE_SEARCH_ENGINE_ID, urllib.parse.quote(query), str(numofArticles), str(startIdx))
     # API をリクエスト
     res = requests.get(url)
     return res    
@@ -57,14 +57,23 @@ def run(dillpath="dills"):
         G["nodes"][query] = True
     
         print("search related words of "+query)
-        res = getCSEArticles(query, 10)
-        if "items" not in res.json().keys():
-            print(res.json())
-            exit()
+        urlList = []
+        # 検索結果のスタート位置をずらしながら 10 回検索する
+        for i in range(10):
+            res = getCSEArticles(query, 10, startIdx=10*i)
+            if "items" not in res.json().keys():
+                print(res.json())
+                exit()
+            for item in res.json()["items"]:
+                urlList.append(item["link"])
+            # 検索結果が足りない場合，それ以上スタート位置をずらす必要がないため
+            # API の回数制限を守るためにブレーク
+            if len(res.json()["items"]) < 10:
+                break
         articles = {}
-        for item in res.json()["items"]:
+        for url in urlList:
             try:
-                html = requests.get(item["link"]).text
+                html = requests.get(url).text
             except:
                 print("ダメなページっぽい:"+str(item["link"]))
                 html = ""
