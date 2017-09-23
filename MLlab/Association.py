@@ -21,6 +21,22 @@ if __name__ == "__main__":
             print("今は" + str(len(G["nodes"])) + " 単語を知ってるよ！")
         elif query == "knowns":
             print("今までで " + str(len([a for a in G["nodes"] if G["nodes"][a] == True])) + " 単語について調べたよ！")
+        elif query == "linkhist":
+            print("ノードごとの接続リンク数のヒストグラムを調べてみるよ！")
+            hist = {}
+            for n in G["nodes"]:
+                count = len([e for e in G["edges"].keys() if e[0] == n])
+                if count not in hist.keys():
+                    hist[count] = [1, n]
+                else:
+                    hist[count][0] += 1
+                    if len(hist[count]) < 4:
+                        hist[count].append(n)
+                    elif len(hist[count]) == 4:
+                        hist[count].append("...")
+            print("こんな感じだよ！")
+            for h in sorted(list(hist.keys())):
+                print(str(h) + ":" + str(hist[h]))
         elif query[:5] == "unk->":
             unk = searchstillUnknownRelatedWords(G, query.split("->")[1])
             if len(unk) == 0:
