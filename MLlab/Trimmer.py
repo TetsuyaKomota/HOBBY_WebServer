@@ -13,8 +13,8 @@ for n in G["nodes"]:
     flg = False
     while True:
         print("y:消す  n:消さない  e:終了  >", end="")
-        print("")
         query = input()
+        print("")
         if query == "e":
             print("了解，じゃあここで終了ね")
             flg = True
@@ -38,8 +38,8 @@ for n in G["nodes"]:
 print("ここまでの編集，セーブしちゃっていい？")
 while True:
     print("y:セーブする  n:セーブしない  >", end="")
-    print("")
     query = input()
+    print("")
     if query == "y":
         print("了解，じゃあセーブしまーす")
         with open("dills/G_CSE.dill", "wb") as f:

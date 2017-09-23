@@ -5,6 +5,7 @@ import requests
 import MeCab
 import dill
 import re
+import unicodedata
 from random import random
 import numpy as np
 from setting import CSE_API_KEY
@@ -102,11 +103,13 @@ def run(dillpath="dills"):
                         catflg = True
                     concat += tempword
                 # 英単語を無視する
+                # というか，ひらがなカタカナ漢字以外の文字を一文字でも含むものを除外
                 tempFlg = False
                 for t in tempword:
                     # ASCII 上で 32~127 は 半角文字を表すらしい
                     # http://qiita.com/kakk_a/items/3aef4458ed2269a59d63
-                    if t in [chr(c) for c in range(32, 127)]:
+                    # if t in [chr(c) for c in range(32, 127)]:
+                    if unicodedata.name(t).split(" ")[0] not in ["HIRAGANA", "KATAKANA", "CJK"]:
                         tempFlg = True
                         break
                 # 一文字でも半角英数なら英単語だと判定する
